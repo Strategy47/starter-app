@@ -30,6 +30,8 @@ class UserFixtures extends Fixture implements FixtureGroupInterface, DependentFi
             'roles' => [User::ROLE_ADMIN],
             'password' => 'Pass_123',
             'active' => true,
+            'phoneVerified' => true,
+            'emailVerified' => true
         ],
         [
             'firstname' => 'David',
@@ -38,6 +40,8 @@ class UserFixtures extends Fixture implements FixtureGroupInterface, DependentFi
             'roles' => [User::ROLE_AGENCY],
             'password' => 'Pass_456',
             'active' => true,
+            'phoneVerified' => true,
+            'emailVerified' => true
         ],
         [
             'firstname' => 'David',
@@ -46,6 +50,8 @@ class UserFixtures extends Fixture implements FixtureGroupInterface, DependentFi
             'roles' => [User::ROLE_OWNER],
             'password' => 'Pass_789',
             'active' => true,
+            'phoneVerified' => true,
+            'emailVerified' => true
         ],
         [
             'firstname' => 'David',
@@ -54,6 +60,8 @@ class UserFixtures extends Fixture implements FixtureGroupInterface, DependentFi
             'roles' => [User::ROLE_TENANT],
             'active' => true,
             'password' => 'Pass_012',
+            'phoneVerified' => true,
+            'emailVerified' => true
         ],
         [
             'firstname' => 'David',
@@ -61,7 +69,9 @@ class UserFixtures extends Fixture implements FixtureGroupInterface, DependentFi
             'email' => 'dev-inactive@my-app.loc',
             'roles' => [User::ROLE_TENANT],
             'password' => 'Pass_012',
-            'active' => false
+            'active' => false,
+            'phoneVerified' => true,
+            'emailVerified' => true
         ],
         [
             'firstname' => 'David',
@@ -70,7 +80,9 @@ class UserFixtures extends Fixture implements FixtureGroupInterface, DependentFi
             'roles' => [User::ROLE_AGENCY],
             'password' => 'Pass_012',
             'active' => true,
-            'agency' => 'dev-agency@my-app.loc'
+            'agency' => 'dev-agency@my-app.loc',
+            'phoneVerified' => true,
+            'emailVerified' => false
         ],
         [
             'firstname' => 'David',
@@ -79,7 +91,29 @@ class UserFixtures extends Fixture implements FixtureGroupInterface, DependentFi
             'roles' => [User::ROLE_AGENCY],
             'password' => 'Pass_012',
             'active' => true,
-            'agency' => 'dev-agency-inactive@my-app.loc'
+            'agency' => 'dev-agency-inactive@my-app.loc',
+            'phoneVerified' => false,
+            'emailVerified' => true
+        ],
+        [
+            'firstname' => 'David',
+            'lastname' => 'Phone not verifies',
+            'email' => 'dev-no-phone@my-app.loc',
+            'roles' => [User::ROLE_AGENCY],
+            'password' => 'Pass_012',
+            'active' => true,
+            'phoneVerified' => false,
+            'emailVerified' => false
+        ],
+        [
+            'firstname' => 'David',
+            'lastname' => 'Email not verifies',
+            'email' => 'dev-no-email@my-app.loc',
+            'roles' => [User::ROLE_AGENCY],
+            'password' => 'Pass_012',
+            'active' => true,
+            'phoneVerified' => false,
+            'emailVerified' => false
         ],
     ];
 

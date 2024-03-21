@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PDepend>
+  <Packages>
+    <Package name="App\DataFixtures">
+      <Stats>
+        <TotalClasses>5</TotalClasses>
+        <ConcreteClasses>5</ConcreteClasses>
+        <AbstractClasses>0</AbstractClasses>
+        <Ca>0</Ca>
+        <Ce>9</Ce>
+        <A>0</A>
+        <I>1</I>
+        <D>0</D>
+      </Stats>
+      <ConcreteClasses>
+        <Class sourceFile="/Users/macbook/workspace/immo-app/backend/src/DataFixtures/AgencyFixtures.php">AgencyFixtures</Class>
+        <Class sourceFile="/Users/macbook/workspace/immo-app/backend/src/DataFixtures/CountryFixtures.php">CountryFixtures</Class>
+        <Class sourceFile="/Users/macbook/workspace/immo-app/backend/src/DataFixtures/LocaleFixtures.php">LocaleFixtures</Class>
+        <Class sourceFile="/Users/macbook/workspace/immo-app/backend/src/DataFixtures/UserDevFixtures.php">UserDevFixtures</Class>
+        <Class sourceFile="/Users/macbook/workspace/immo-app/backend/src/DataFixtures/UserFixtures.php">UserFixtures</Class>
+      </ConcreteClasses>
+      <AbstractClasses/>
+      <DependsUpon>
+        <Package>App\Entity</Package>
+        <Package>App\Event</Package>
+        <Package>App\Repository</Package>
+        <Package>Doctrine\Bundle\FixturesBundle</Package>
+        <Package>Doctrine\Common\DataFixtures</Package>
+        <Package>Doctrine\Persistence</Package>
+        <Package>Faker</Package>
+        <Package>Symfony\Component\EventDispatcher</Package>
+        <Package>Symfony\Component\Intl</Package>
+      </DependsUpon>
+      <UsedBy/>
+    </Package>
+    <Package name="App\Entity">
+      <Stats>
+        <TotalClasses>5</TotalClasses>
+        <ConcreteClasses>5</ConcreteClasses>
+        <AbstractClasses>0</AbstractClasses>
+        <Ca>5</Ca>
+        <Ce>4</Ce>
+        <A>0</A>
+        <I>0.44444444444444</I>
+        <D>0.55555555555556</D>
+      </Stats>
+      <ConcreteClasses>
+        <Class sourceFile="/Users/macbook/workspace/immo-app/backend/src/Entity/Address.php">Address</Class>
+        <Class sourceFile="/Users/macbook/workspace/immo-app/backend/src/Entity/Agency.php">Agency</Class>
+        <Class sourceFile="/Users/macbook/workspace/immo-app/backend/src/Entity/Country.php">Country</Class>
+        <Class sourceFile="/Users/macbook/workspace/immo-app/backend/src/Entity/Locale.php">Locale</Class>
+        <Class sourceFile="/Users/macbook/workspace/immo-app/backend/src/Entity/User.php">User</Class>
+      </ConcreteClasses>
+      <AbstractClasses/>
+      <DependsUpon>
+        <Package></Package>
+        <Package>Doctrine\Common\Collections</Package>
+        <Package>Symfony\Component\Security\Core\User</Package>
+        <Package>libphonenumber</Package>
+      </DependsUpon>
+      <UsedBy>
+        <Package>App\DataFixtures</Package>
+        <Package>App\DataFixtures\Utils</Package>
+        <Package>App\EntityListener</Package>
+        <Package>App\Repository</Package>
+        <Package>App\Security</Package>
+      </UsedBy>
+    </Package>
+    <Package name="App\EntityListener">
+      <Stats>
+        <TotalClasses>1</TotalClasses>
+        <ConcreteClasses>1</ConcreteClasses>
+        <AbstractClasses>0</AbstractClasses>
+        <Ca>0</Ca>
+        <Ce>6</Ce>
+        <A>0</A>
+        <I>1</I>
+        <D>0</D>
+      </Stats>
+      <ConcreteClasses>
+        <Class sourceFile="/Users/macbook/workspace/immo-app/backend/src/EntityListener/UserListener.php">UserListener</Class>
+      </ConcreteClasses>
+      <AbstractClasses/>
+      <DependsUpon>
+        <Package>App\Entity</Package>
+        <Package>App\Event\Interface</Package>
+        <Package>Doctrine\ORM\Event</Package>
+        <Package>Symfony\Bundle\SecurityBundle</Package>
+        <Package>Symfony\Component\HttpKernel\Exception</Package>
+        <Package>Symfony\Component\PasswordHasher\Hasher</Package>
+      </DependsUpon>
+      <UsedBy/>
+    </Package>
+    <Package name="App\Event">
+      <Stats>
+        <TotalClasses>1</TotalClasses>
+        <ConcreteClasses>1</ConcreteClasses>
+        <AbstractClasses>0</AbstractClasses>
+        <Ca>1</Ca>
+        <Ce>1</Ce>
+        <A>0</A>
+        <I>0.5</I>
+        <D>0.5</D>
+      </Stats>
+      <ConcreteClasses>
+        <Class sourceFile="/Users/macbook/workspace/immo-app/backend/src/Event/DisableListenerEvent.php">DisableListenerEvent</Class>
+      </ConcreteClasses>
+      <AbstractClasses/>
+      <DependsUpon>
+        <Package>Symfony\Contracts\EventDispatcher</Package>
+      </DependsUpon>
+      <UsedBy>
+        <Package>App\DataFixtures</Package>
+      </UsedBy>
+    </Package>
+    <Package name="App\Event\Interface">
+      <Stats>
+        <TotalClasses>1</TotalClasses>
+        <ConcreteClasses>0</ConcreteClasses>
+        <AbstractClasses>1</AbstractClasses>
+        <Ca>1</Ca>
+        <Ce>0</Ce>
+        <A>1</A>
+        <I>0</I>
+        <D>0</D>
+      </Stats>
+      <ConcreteClasses/>
+      <AbstractClasses>
+        <Class sourceFile="/Users/macbook/workspace/immo-app/backend/src/Event/Interface/DisableListenerInterface.php">DisableListenerInterface</Class>
+      </AbstractClasses>
+      <DependsUpon/>
+      <UsedBy>
+        <Package>App\EntityListener</Package>
+      </UsedBy>
+    </Package>
+    <Package name="App">
+      <Stats>
+        <TotalClasses>1</TotalClasses>
+        <ConcreteClasses>1</ConcreteClasses>
+        <AbstractClasses>0</AbstractClasses>
+        <Ca>0</Ca>
+        <Ce>1</Ce>
+        <A>0</A>
+        <I>1</I>
+        <D>0</D>
+      </Stats>
+      <ConcreteClasses>
+        <Class sourceFile="/Users/macbook/workspace/immo-app/backend/src/Kernel.php">Kernel</Class>
+      </ConcreteClasses>
+      <AbstractClasses/>
+      <DependsUpon>
+        <Package>Symfony\Component\HttpKernel</Package>
+      </DependsUpon>
+      <UsedBy/>
+    </Package>
+    <Package name="App\Repository">
+      <Stats>
+        <TotalClasses>5</TotalClasses>
+        <ConcreteClasses>5</ConcreteClasses>
+        <AbstractClasses>0</AbstractClasses>
+        <Ca>2</Ca>
+        <Ce>5</Ce>
+        <A>0</A>
+        <I>0.71428571428571</I>
+        <D>0.28571428571429</D>
+      </Stats>
+      <ConcreteClasses>
+        <Class sourceFile="/Users/macbook/workspace/immo-app/backend/src/Repository/AddressRepository.php">AddressRepository</Class>
+        <Class sourceFile="/Users/macbook/workspace/immo-app/backend/src/Repository/AgencyRepository.php">AgencyRepository</Class>
+        <Class sourceFile="/Users/macbook/workspace/immo-app/backend/src/Repository/CountryRepository.php">CountryRepository</Class>
+        <Class sourceFile="/Users/macbook/workspace/immo-app/backend/src/Repository/LocaleRepository.php">LocaleRepository</Class>
+        <Class sourceFile="/Users/macbook/workspace/immo-app/backend/src/Repository/UserRepository.php">UserRepository</Class>
+      </ConcreteClasses>
+      <AbstractClasses/>
+      <DependsUpon>
+        <Package>App\Entity</Package>
+        <Package>Doctrine\Bundle\DoctrineBundle\Repository</Package>
+        <Package>Doctrine\Persistence</Package>
+        <Package>Symfony\Component\Security\Core\Exception</Package>
+        <Package>Symfony\Component\Security\Core\User</Package>
+      </DependsUpon>
+      <UsedBy>
+        <Package>App\DataFixtures</Package>
+        <Package>App\DataFixtures\Utils</Package>
+      </UsedBy>
+    </Package>
+    <Package name="App\Security">
+      <Stats>
+        <TotalClasses>1</TotalClasses>
+        <ConcreteClasses>1</ConcreteClasses>
+        <AbstractClasses>0</AbstractClasses>
+        <Ca>0</Ca>
+        <Ce>5</Ce>
+        <A>0</A>
+        <I>1</I>
+        <D>0</D>
+      </Stats>
+      <ConcreteClasses>
+        <Class sourceFile="/Users/macbook/workspace/immo-app/backend/src/Security/UserChecker.php">UserChecker</Class>
+      </ConcreteClasses>
+      <AbstractClasses/>
+      <DependsUpon>
+        <Package></Package>
+        <Package>App\Entity</Package>
+        <Package>Symfony\Component\HttpFoundation</Package>
+        <Package>Symfony\Component\Security\Core\Exception</Package>
+        <Package>Symfony\Component\Security\Core\User</Package>
+      </DependsUpon>
+      <UsedBy/>
+    </Package>
+  </Packages>
+  <Cycles/>
+</PDepend>

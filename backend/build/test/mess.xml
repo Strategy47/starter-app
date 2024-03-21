@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pmd version="@package_version@" tool="phpmd" timestamp="2024-03-21T16:54:36+00:00">
+  <file name="/Users/macbook/workspace/immo-app/backend/src/Security/UserChecker.php">
+    <violation beginline="54" endline="54" rule="UnusedFormalParameter" ruleset="Unused Code Rules" externalInfoUrl="https://phpmd.org/rules/unusedcode.html#unusedformalparameter" priority="3">
+      Avoid unused parameters such as &#039;$user&#039;.
+    </violation>
+  </file>
+</pmd>

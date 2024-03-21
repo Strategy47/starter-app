@@ -99,6 +99,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Agency $agency = null;
 
+    #[ORM\Column]
+    private bool $phoneVerified = false;
+
+    #[ORM\Column]
+    private bool $emailVerified = false;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -302,6 +308,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAgency(?Agency $agency): static
     {
         $this->agency = $agency;
+
+        return $this;
+    }
+
+    public function isPhoneVerified(): bool
+    {
+        return $this->phoneVerified;
+    }
+
+    public function setPhoneVerified(bool $phoneVerified): static
+    {
+        $this->phoneVerified = $phoneVerified;
+
+        return $this;
+    }
+
+    public function isEmailVerified(): bool
+    {
+        return $this->emailVerified;
+    }
+
+    public function setEmailVerified(bool $emailVerified): static
+    {
+        $this->emailVerified = $emailVerified;
 
         return $this;
     }

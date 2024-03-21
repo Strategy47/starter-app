@@ -31,6 +31,8 @@ trait UserTrait
             ->setActive(!array_key_exists('active', $fixture) || $fixture['active'])
             ->setPhone($this->faker->phoneNumber)
             ->setLocale($locale)
-            ->setAddress($this->createAddress());
+            ->setAddress($this->createAddress())
+            ->setPhoneVerified(!array_key_exists('phoneVerified', $fixture) || $fixture['phoneVerified'])
+            ->setEmailVerified(!array_key_exists('emailVerified', $fixture) || $fixture['emailVerified']);
     }
 }
