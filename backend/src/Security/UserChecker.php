@@ -11,9 +11,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserChecker implements UserCheckerInterface
 {
-    /**
-     * @inheritDoc
-     */
     public function checkPreAuth(UserInterface $user): void
     {
         if (!$user instanceof User) {
@@ -27,11 +24,12 @@ class UserChecker implements UserCheckerInterface
         if ($user->getAgency() && !$user->getAgency()->isActive()) {
             throw new CustomUserMessageAccountStatusException('error.agency.inactive');
         }
+
+        if (!$user->isActive()) {
+            throw new CustomUserMessageAccountStatusException('error.user.inactive');
+        }
     }
 
-    /**
-     * @inheritDoc
-     */
     public function checkPostAuth(UserInterface $user): void
     {
     }

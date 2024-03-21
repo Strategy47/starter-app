@@ -1,5 +1,5 @@
 users_authenticate:
-    path: /api/users/authenticate
+    path: /authenticate
     methods: ['POST']
     host: '%api_host%'
 

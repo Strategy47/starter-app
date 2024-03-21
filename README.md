@@ -1,4 +1,4 @@
-**# Angular Symfony API Platform with Ionic Starter Project
+# Angular Symfony API Platform with Ionic Starter Project
 
 Welcome to the Angular Symfony API Platform with Ionic Starter Project! This project provides a foundation for building modern web and mobile applications using Angular for the frontend, Symfony API Platform for the backend, Ionic for mobile development, and integrating Ngrx for state management and JWT for authentication.
 

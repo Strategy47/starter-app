@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
+use App\EntityListener\UserListener;
 use App\Repository\UserRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,10 +18,23 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[
     ORM\Entity(repositoryClass: UserRepository::class),
     ORM\Table(name: '`user`'),
-    ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])
+    ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email']),
+    ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_PHONE', fields: ['phone']),
+    ORM\EntityListeners([UserListener::class])
 ]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+    public const ROLE_AGENCY = 'ROLE_AGENCY';
+    public const ROLE_OWNER = 'ROLE_OWNER';
+    public const ROLE_TENANT = 'ROLE_TENANT';
+    public const ROLES = [
+        User::ROLE_ADMIN,
+        User::ROLE_AGENCY,
+        User::ROLE_OWNER,
+        User::ROLE_TENANT
+    ];
+
     #[
         ORM\Id,
         ORM\GeneratedValue,
@@ -41,9 +55,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
-    private ?string $password = null;
-
-    private ?string $plainPassword = null;
+    private string $password;
 
     #[ORM\Column(length: 255)]
     private ?string $firstname = null;
@@ -61,22 +73,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             message: 'error.field.format'
         )
     ]
-    #[ApiProperty(openapiContext: ['type' => 'string'])]
+
+    private ?PhoneNumber $phone = null;
+
+    #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $lastLoginAt = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    private \DateTimeImmutable $createdAt;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column]
-    private ?bool $active = null;
+    private bool $active = true;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Address $address = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+     private ?Locale $locale = null;
+
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    private ?Agency $agency = null;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -143,23 +169,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPlainPassword(): ?string
-    {
-        return $this->plainPassword;
-    }
-
-    public function setPlainPassword(?string $plainPassword): void
-    {
-        $this->plainPassword = $plainPassword;
-    }
-
     /**
      * @see UserInterface
      */
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        $this->plainPassword = null;
+        // $this->plainPassword = null;
     }
 
     public function getFirstname(): ?string
@@ -218,7 +234,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -242,7 +258,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isActive(): ?bool
+    public function isActive(): bool
     {
         return $this->active;
     }
@@ -262,6 +278,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAddress(Address $address): static
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function getLocale(): ?Locale
+    {
+        return $this->locale;
+    }
+
+    public function setLocale(?Locale $locale): static
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    public function getAgency(): ?Agency
+    {
+        return $this->agency;
+    }
+
+    public function setAgency(?Agency $agency): static
+    {
+        $this->agency = $agency;
 
         return $this;
     }
