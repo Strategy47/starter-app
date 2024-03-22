@@ -69,7 +69,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             message: 'error.field.not_blank'
         ),
         AssertPhoneNumber(
-            type: AssertPhoneNumber::ANY,
+            type: AssertPhoneNumber::MOBILE,
             message: 'error.field.format'
         )
     ]

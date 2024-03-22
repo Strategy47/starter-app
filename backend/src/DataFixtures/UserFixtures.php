@@ -22,11 +22,12 @@ class UserFixtures extends Fixture implements FixtureGroupInterface, DependentFi
 {
     use UserTrait;
 
-    private array $fixtures = [
+    public static array $fixtures = [
         [
             'firstname' => 'David',
             'lastname' => 'Admin',
             'email' => 'dev-admin@my-app.loc',
+            'phone' => '+33611111111',
             'roles' => [User::ROLE_ADMIN],
             'password' => 'Pass_123',
             'active' => true,
@@ -37,6 +38,7 @@ class UserFixtures extends Fixture implements FixtureGroupInterface, DependentFi
             'firstname' => 'David',
             'lastname' => 'Agency',
             'email' => 'dev-agency@my-app.loc',
+            'phone' => '+33722222222',
             'roles' => [User::ROLE_AGENCY],
             'password' => 'Pass_456',
             'active' => true,
@@ -50,12 +52,13 @@ class UserFixtures extends Fixture implements FixtureGroupInterface, DependentFi
             'roles' => [User::ROLE_OWNER],
             'password' => 'Pass_789',
             'active' => true,
-            'phoneVerified' => true,
+            'phoneVerified' => false,
             'emailVerified' => true
         ],
         [
             'firstname' => 'David',
             'lastname' => 'Owner',
+            'phone' => '+33755555555',
             'email' => 'dev-tenant@my-app.loc',
             'roles' => [User::ROLE_TENANT],
             'active' => true,
@@ -66,6 +69,7 @@ class UserFixtures extends Fixture implements FixtureGroupInterface, DependentFi
         [
             'firstname' => 'David',
             'lastname' => 'Disabled',
+            'phone' => '+33766666666',
             'email' => 'dev-inactive@my-app.loc',
             'roles' => [User::ROLE_TENANT],
             'password' => 'Pass_012',
@@ -77,38 +81,42 @@ class UserFixtures extends Fixture implements FixtureGroupInterface, DependentFi
             'firstname' => 'David',
             'lastname' => 'Agency active',
             'email' => 'dev-agency-active@my-app.loc',
+            'phone' => '+33733333333',
             'roles' => [User::ROLE_AGENCY],
             'password' => 'Pass_012',
             'active' => true,
             'agency' => 'dev-agency@my-app.loc',
             'phoneVerified' => true,
-            'emailVerified' => false
+            'emailVerified' => true
         ],
         [
             'firstname' => 'David',
             'lastname' => 'Agency inactive',
             'email' => 'dev-agency-inactive@my-app.loc',
+            'phone' => '+33744444444',
             'roles' => [User::ROLE_AGENCY],
             'password' => 'Pass_012',
             'active' => true,
             'agency' => 'dev-agency-inactive@my-app.loc',
-            'phoneVerified' => false,
+            'phoneVerified' => true,
             'emailVerified' => true
         ],
         [
             'firstname' => 'David',
             'lastname' => 'Phone not verifies',
             'email' => 'dev-no-phone@my-app.loc',
+            'phone' => '+33555555555',
             'roles' => [User::ROLE_AGENCY],
             'password' => 'Pass_012',
             'active' => true,
             'phoneVerified' => false,
-            'emailVerified' => false
+            'emailVerified' => true
         ],
         [
             'firstname' => 'David',
-            'lastname' => 'Email not verifies',
+            'lastname' => 'Email and phone not verifies',
             'email' => 'dev-no-email@my-app.loc',
+            'phone' => '+33666666666',
             'roles' => [User::ROLE_AGENCY],
             'password' => 'Pass_012',
             'active' => true,
@@ -159,7 +167,7 @@ class UserFixtures extends Fixture implements FixtureGroupInterface, DependentFi
             DisableListenerEvent::DISABLE
         );
 
-        foreach ($this->fixtures as $fixture) {
+        foreach (self::$fixtures as $fixture) {
             $user = $this->createUser($fixture);
 
             if (array_key_exists('agency', $fixture)) {

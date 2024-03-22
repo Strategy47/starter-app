@@ -29,7 +29,7 @@ trait UserTrait
             ->setPassword($fixture['password'])
             ->setRoles($fixture['roles'])
             ->setActive(!array_key_exists('active', $fixture) || $fixture['active'])
-            ->setPhone($this->faker->phoneNumber)
+            ->setPhone(array_key_exists('phone', $fixture) ? $fixture['phone'] : $this->faker->phoneNumber)
             ->setLocale($locale)
             ->setAddress($this->createAddress())
             ->setPhoneVerified(!array_key_exists('phoneVerified', $fixture) || $fixture['phoneVerified'])

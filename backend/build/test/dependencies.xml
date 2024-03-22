@@ -159,10 +159,10 @@
         <ConcreteClasses>5</ConcreteClasses>
         <AbstractClasses>0</AbstractClasses>
         <Ca>2</Ca>
-        <Ce>5</Ce>
+        <Ce>6</Ce>
         <A>0</A>
-        <I>0.71428571428571</I>
-        <D>0.28571428571429</D>
+        <I>0.75</I>
+        <D>0.25</D>
       </Stats>
       <ConcreteClasses>
         <Class sourceFile="/Users/macbook/workspace/immo-app/backend/src/Repository/AddressRepository.php">AddressRepository</Class>
@@ -176,6 +176,7 @@
         <Package>App\Entity</Package>
         <Package>Doctrine\Bundle\DoctrineBundle\Repository</Package>
         <Package>Doctrine\Persistence</Package>
+        <Package>Symfony\Bridge\Doctrine\Security\User</Package>
         <Package>Symfony\Component\Security\Core\Exception</Package>
         <Package>Symfony\Component\Security\Core\User</Package>
       </DependsUpon>
@@ -190,7 +191,7 @@
         <ConcreteClasses>1</ConcreteClasses>
         <AbstractClasses>0</AbstractClasses>
         <Ca>0</Ca>
-        <Ce>5</Ce>
+        <Ce>6</Ce>
         <A>0</A>
         <I>1</I>
         <D>0</D>
@@ -203,6 +204,7 @@
         <Package></Package>
         <Package>App\Entity</Package>
         <Package>Symfony\Component\HttpFoundation</Package>
+        <Package>Symfony\Component\HttpKernel\Exception</Package>
         <Package>Symfony\Component\Security\Core\Exception</Package>
         <Package>Symfony\Component\Security\Core\User</Package>
       </DependsUpon>

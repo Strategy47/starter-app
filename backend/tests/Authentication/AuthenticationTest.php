@@ -36,7 +36,7 @@ class AuthenticationTest extends ApiTestCase
     {
         $this->client->request(Request::METHOD_POST, '/authenticate', [
             'json' => [
-                'email' => 'dev-admin@my-app.loc',
+                'identifier' => 'dev-admin@my-app.loc',
                 'nie' => 'Pass_123',
             ],
         ]);
@@ -49,7 +49,7 @@ class AuthenticationTest extends ApiTestCase
     {
         $this->client->request(Request::METHOD_POST, '/authenticate', [
             'json' => [
-                'phone' => '0111111111',
+                'identifier' => '0611111111',
                 'nie' => 'Pass_123',
             ],
         ]);

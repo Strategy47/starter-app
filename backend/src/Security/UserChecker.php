@@ -7,13 +7,14 @@ namespace App\Security;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class UserChecker implements UserCheckerInterface
+readonly class UserChecker implements UserCheckerInterface
 {
-    private readonly Request $request;
+    private Request $request;
     public function __construct(
         RequestStack $requestStack
     )
@@ -39,14 +40,25 @@ class UserChecker implements UserCheckerInterface
             throw new CustomUserMessageAccountStatusException('error.user.inactive');
         }
 
-        if (!$user->isPhoneVerified() && !$user->isEmailVerified()) {
-            /** @var array<string> $requestContent */
-            $requestContent = json_decode($this->request->getContent(), true);
+        /** @var array<string> $requestContent */
+        $requestContent = json_decode($this->request->getContent(), true);
+        $identifier = array_key_exists('identifier', $requestContent) ? $requestContent['identifier'] : null;
 
-            if (array_key_exists('email', $requestContent)) {
-                throw new CustomUserMessageAccountStatusException('error.user.email_not_verified');
+        if (array_key_exists('identifier', $requestContent)) {
+            if (!is_string($identifier)) {
+                throw new BadRequestHttpException('error.key.identifier');
             }
+        }
 
+        if (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
+            if (!$user->isEmailVerified()) {
+                throw new CustomUserMessageAccountStatusException('error.user.email_not_verified');
+            } else {
+                return;
+            }
+        }
+
+        if (!$user->isPhoneVerified()) {
             throw new CustomUserMessageAccountStatusException('error.user.phone_not_verified');
         }
     }

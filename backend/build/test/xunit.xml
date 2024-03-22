@@ -1,18 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="" tests="8" assertions="13" errors="0" warnings="0" failures="0" skipped="0" time="0.173146">
-    <testsuite name="Project Test Suite" tests="8" assertions="13" errors="0" warnings="0" failures="0" skipped="0" time="0.173146">
-      <testsuite name="App\Tests\Authentication\AuthenticationEmailTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationEmailTest.php" tests="5" assertions="10" errors="0" warnings="0" failures="0" skipped="0" time="0.154035">
-        <testcase name="userShouldAuthenticate" class="App\Tests\Authentication\AuthenticationEmailTest" classname="App.Tests.Authentication.AuthenticationEmailTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationEmailTest.php" line="22" assertions="2" time="0.132131"/>
-        <testcase name="userShouldNotAuthenticateWithInvalidFields" class="App\Tests\Authentication\AuthenticationEmailTest" classname="App.Tests.Authentication.AuthenticationEmailTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationEmailTest.php" line="36" assertions="2" time="0.008623"/>
-        <testcase name="userShouldNotAuthenticateIfInactive" class="App\Tests\Authentication\AuthenticationEmailTest" classname="App.Tests.Authentication.AuthenticationEmailTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationEmailTest.php" line="53" assertions="2" time="0.003476"/>
-        <testcase name="userShouldNotAuthenticateIfInactiveAgency" class="App\Tests\Authentication\AuthenticationEmailTest" classname="App.Tests.Authentication.AuthenticationEmailTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationEmailTest.php" line="69" assertions="2" time="0.004177"/>
-        <testcase name="userShouldNotAuthenticateIfPhoneNotValidate" class="App\Tests\Authentication\AuthenticationEmailTest" classname="App.Tests.Authentication.AuthenticationEmailTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationEmailTest.php" line="85" assertions="2" time="0.005628"/>
+  <testsuite name="" tests="14" assertions="36" errors="0" warnings="0" failures="1" skipped="0" time="0.223697">
+    <testsuite name="Project Test Suite" tests="14" assertions="36" errors="0" warnings="0" failures="1" skipped="0" time="0.223697">
+      <testsuite name="App\Tests\Authentication\AuthenticationEmailTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationEmailTest.php" tests="6" assertions="20" errors="0" warnings="0" failures="0" skipped="0" time="0.170858">
+        <testcase name="userShouldAuthenticateWithEmail" class="App\Tests\Authentication\AuthenticationEmailTest" classname="App.Tests.Authentication.AuthenticationEmailTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationEmailTest.php" line="23" assertions="10" time="0.143353"/>
+        <testcase name="userShouldAuthenticateWithEmailAndAgency" class="App\Tests\Authentication\AuthenticationEmailTest" classname="App.Tests.Authentication.AuthenticationEmailTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationEmailTest.php" line="41" assertions="2" time="0.009911"/>
+        <testcase name="userShouldNotAuthenticateWithInvalidCredentials" class="App\Tests\Authentication\AuthenticationEmailTest" classname="App.Tests.Authentication.AuthenticationEmailTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationEmailTest.php" line="56" assertions="2" time="0.007963"/>
+        <testcase name="userShouldNotAuthenticateIfInactive" class="App\Tests\Authentication\AuthenticationEmailTest" classname="App.Tests.Authentication.AuthenticationEmailTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationEmailTest.php" line="73" assertions="2" time="0.003661"/>
+        <testcase name="userShouldNotAuthenticateIfInactiveAgency" class="App\Tests\Authentication\AuthenticationEmailTest" classname="App.Tests.Authentication.AuthenticationEmailTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationEmailTest.php" line="89" assertions="2" time="0.003121"/>
+        <testcase name="userShouldNotAuthenticateIfEmailNotValidate" class="App\Tests\Authentication\AuthenticationEmailTest" classname="App.Tests.Authentication.AuthenticationEmailTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationEmailTest.php" line="105" assertions="2" time="0.002849"/>
       </testsuite>
-      <testsuite name="App\Tests\Authentication\AuthenticationTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationTest.php" tests="3" assertions="3" errors="0" warnings="0" failures="0" skipped="0" time="0.019111">
-        <testcase name="userShouldNotAuthenticateWithNoPhoneNoEmail" class="App\Tests\Authentication\AuthenticationTest" classname="App.Tests.Authentication.AuthenticationTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationTest.php" line="22" assertions="1" time="0.013711"/>
-        <testcase name="userShouldNotAuthenticateWithEmailWithoutPassword" class="App\Tests\Authentication\AuthenticationTest" classname="App.Tests.Authentication.AuthenticationTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationTest.php" line="35" assertions="1" time="0.002854"/>
-        <testcase name="userShouldNotAuthenticateWithPhoneWithoutPassword" class="App\Tests\Authentication\AuthenticationTest" classname="App.Tests.Authentication.AuthenticationTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationTest.php" line="48" assertions="1" time="0.002547"/>
+      <testsuite name="App\Tests\Authentication\AuthenticationPhoneTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationPhoneTest.php" tests="5" assertions="13" errors="0" warnings="0" failures="1" skipped="0" time="0.033544">
+        <testcase name="userShouldAuthenticateWithPhone" class="App\Tests\Authentication\AuthenticationPhoneTest" classname="App.Tests.Authentication.AuthenticationPhoneTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationPhoneTest.php" line="23" assertions="6" time="0.013215"/>
+        <testcase name="userShouldAuthenticateWithPhoneAndAgency" class="App\Tests\Authentication\AuthenticationPhoneTest" classname="App.Tests.Authentication.AuthenticationPhoneTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationPhoneTest.php" line="42" assertions="2" time="0.006490"/>
+        <testcase name="userShouldNotAuthenticateWithInvalidCredentials" class="App\Tests\Authentication\AuthenticationPhoneTest" classname="App.Tests.Authentication.AuthenticationPhoneTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationPhoneTest.php" line="56" assertions="2" time="0.002974"/>
+        <testcase name="userShouldNotAuthenticateIfInactive" class="App\Tests\Authentication\AuthenticationPhoneTest" classname="App.Tests.Authentication.AuthenticationPhoneTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationPhoneTest.php" line="73" assertions="1" time="0.005845">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">App\Tests\Authentication\AuthenticationPhoneTest::userShouldNotAuthenticateIfInactive
+Failed asserting that the Response status code is 401.
+HTTP/1.1 200 OK&#13;
+Cache-Control: no-cache, private&#13;
+Content-Type:  application/json&#13;
+Date:          Fri, 22 Mar 2024 11:22:46 GMT&#13;
+X-Robots-Tag:  noindex&#13;
+&#13;
+{"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3MTExMDY1NjYsImV4cCI6MTcxMTExMDE2Niwicm9sZXMiOlsiUk9MRV9URU5BTlQiLCJST0xFX1VTRVIiXSwidXNlcm5hbWUiOiJkZXYtdGVuYW50QG15LWFwcC5sb2MifQ.G41eoKzcVb0xgj56gOiJKjhg-iuodFoDUmlH_DBIuhSJrC6W_AV0LlGfkGFxVo8b7NGWkvkcNH-5q16b-rJHA06t3fTVRqUAMcn7JX1-Em0_ANysKOcHlT6qMLk872xm6rBA0pB1hf6YvyY-9UzzqB3LHPKvQAW7pmAlaWj2r-DsbYkN6JJl4eS-VsUVsUhvTS1oBq12XDEpiPGRWfQEQq4Gx9gi8CZ88ZGCAQprpysEHEnyGibjAkQkEzpeJRqjHW0JEBpxWRMqL0GBE4GS3SSTcQRVt0QC2T2o1wntVMz_KHetDOZM3AWS7kjouQr41d0pq6rL5LOSColhKA8-Mg"}
+
+/Users/macbook/workspace/immo-app/backend/vendor/symfony/framework-bundle/Test/BrowserKitAssertionsTrait.php:148
+/Users/macbook/workspace/immo-app/backend/vendor/symfony/framework-bundle/Test/BrowserKitAssertionsTrait.php:38
+/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationPhoneTest.php:82</failure>
+        </testcase>
+        <testcase name="userShouldNotAuthenticateIfInactiveAgency" class="App\Tests\Authentication\AuthenticationPhoneTest" classname="App.Tests.Authentication.AuthenticationPhoneTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationPhoneTest.php" line="89" assertions="2" time="0.005020"/>
+      </testsuite>
+      <testsuite name="App\Tests\Authentication\AuthenticationTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationTest.php" tests="3" assertions="3" errors="0" warnings="0" failures="0" skipped="0" time="0.019295">
+        <testcase name="userShouldNotAuthenticateWithNoPhoneNoEmail" class="App\Tests\Authentication\AuthenticationTest" classname="App.Tests.Authentication.AuthenticationTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationTest.php" line="22" assertions="1" time="0.013736"/>
+        <testcase name="userShouldNotAuthenticateWithEmailWithoutPassword" class="App\Tests\Authentication\AuthenticationTest" classname="App.Tests.Authentication.AuthenticationTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationTest.php" line="35" assertions="1" time="0.003078"/>
+        <testcase name="userShouldNotAuthenticateWithPhoneWithoutPassword" class="App\Tests\Authentication\AuthenticationTest" classname="App.Tests.Authentication.AuthenticationTest" file="/Users/macbook/workspace/immo-app/backend/tests/Authentication/AuthenticationTest.php" line="48" assertions="1" time="0.002480"/>
       </testsuite>
     </testsuite>
   </testsuite>
