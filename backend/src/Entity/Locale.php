@@ -2,10 +2,21 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\LocaleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: LocaleRepository::class)]
+#[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(paginationEnabled: false)
+    ],
+    normalizationContext: ['groups' => ['locale:read']]
+)]
 class Locale
 {
     #[
@@ -13,12 +24,15 @@ class Locale
         ORM\GeneratedValue,
         ORM\Column
     ]
+    #[Groups(['locale:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 2)]
+    #[Groups(['locale:read'])]
     private ?string $code = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['locale:read'])]
     private ?string $name = null;
 
     public function getId(): ?int

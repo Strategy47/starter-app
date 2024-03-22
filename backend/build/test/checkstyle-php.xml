@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="PHP_CodeSniffer 3.9.0" errors="0" tests="24" failures="7">
+<testsuites name="PHP_CodeSniffer 3.9.0" errors="0" tests="24" failures="6">
 <testsuite name="src/Repository/CountryRepository.php" errors="0" tests="1" failures="0">
  <testcase name="src/Repository/CountryRepository.php"/>
 </testsuite>
@@ -32,10 +32,8 @@
 <testsuite name="src/Entity/Address.php" errors="0" tests="1" failures="0">
  <testcase name="src/Entity/Address.php"/>
 </testsuite>
-<testsuite name="src/Entity/User.php" errors="0" tests="1" failures="1">
- <testcase name="Generic.WhiteSpace.ScopeIndent.IncorrectExact at src/Entity/User.php (97:6)">
-  <failure type="error" message="Line indented incorrectly; expected 4 spaces, found 5"/>
- </testcase>
+<testsuite name="src/Entity/User.php" errors="0" tests="1" failures="0">
+ <testcase name="src/Entity/User.php"/>
 </testsuite>
 <testsuite name="src/Entity/Agency.php" errors="0" tests="1" failures="0">
  <testcase name="src/Entity/Agency.php"/>

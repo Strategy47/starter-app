@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Trait;
 
 use ApiPlatform\Symfony\Bundle\Test\Client;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
 
 trait CommonTrait
 {
@@ -23,6 +25,22 @@ trait CommonTrait
 
         $this->client = static::createClient([], $clientOptions);
         $this->client->disableReboot();
+    }
+
+    protected function getEntityManager(): EntityManagerInterface
+    {
+        $entityManager = self::getContainer()->get(EntityManagerInterface::class);
+
+        if (!$entityManager instanceof EntityManagerInterface) {
+            throw new \LogicException(sprintf('%s is not a service.', EntityManagerInterface::class));
+        }
+
+        return $entityManager;
+    }
+
+    protected function getRepository(string $class): ObjectRepository
+    {
+        return $this->getEntityManager()->getRepository($class);
     }
 
     protected function hydra(string ...$messages): string

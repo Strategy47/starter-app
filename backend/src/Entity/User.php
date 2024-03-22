@@ -3,8 +3,12 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\EntityListener\UserListener;
 use App\Repository\UserRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\NumberParseException;
@@ -22,6 +26,19 @@ use Symfony\Component\Security\Core\User\UserInterface;
     ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_PHONE', fields: ['phone']),
     ORM\EntityListeners([UserListener::class])
 ]
+#[ApiResource(
+    operations: [
+        new Post(
+            uriTemplate: '/register',
+            validationContext: ['groups' => ['Default', 'registration']]
+        ),
+        new GetCollection(
+            security: 'is_granted(\'' . User::ROLE_ADMIN . '\')'
+        )
+    ],
+    normalizationContext: ['groups' => ['user:read']],
+    denormalizationContext: ['groups' => ['user:write']]
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public const ROLE_ADMIN = 'ROLE_ADMIN';
@@ -40,69 +57,105 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         ORM\GeneratedValue,
         ORM\Column
     ]
+    #[Groups(['user:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Assert\NotBlank(
+        message: 'error.field.not_blank',
+        allowNull: false
+    )]
+    #[Groups(['user:read', 'user:write'])]
     private ?string $email = null;
 
     /**
      * @var list<string> The user roles
      */
     #[ORM\Column]
+    #[Groups(['user:read'])]
     private array $roles = [];
 
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\NotBlank(
+        message: 'error.field.not_blank',
+        allowNull: false,
+        groups: ['registration']
+    )]
+    #[Groups(['user:read', 'user:write'])]
     private string $password;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(
+        message: 'error.field.not_blank',
+        allowNull: false
+    )]
+    #[Groups(['user:read', 'user:write'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(
+        message: 'error.field.not_blank',
+        allowNull: false
+    )]
+    #[Groups(['user:read', 'user:write'])]
     private ?string $lastname = null;
 
     #[ORM\Column(type: PhoneNumberType::NAME, nullable: true)]
+    #[ApiProperty(openapiContext: ['type' => 'string'])]
     #[
-        Assert\NotBlank(
-            message: 'error.field.not_blank'
-        ),
         AssertPhoneNumber(
             type: AssertPhoneNumber::MOBILE,
             message: 'error.field.format'
         )
     ]
-
+    #[Groups(['user:read', 'user:write'])]
     private ?PhoneNumber $phone = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['user:read'])]
     private ?\DateTimeImmutable $lastLoginAt = null;
 
     #[ORM\Column]
+    #[Groups(['user:read'])]
     private \DateTimeImmutable $createdAt;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['user:read'])]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column]
+    #[Groups(['user:read', 'user:admin:write'])]
     private bool $active = true;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull(
+        message: 'error.field.not_null'
+    )]
+    #[Groups(['user:read', 'user:write'])]
     private ?Address $address = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-     private ?Locale $locale = null;
+    #[Assert\NotNull(
+        message: 'error.field.not_null'
+    )]
+    #[Groups(['user:read', 'user:write'])]
+    private ?Locale $locale = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
+    #[Groups(['user:read', 'user:write'])]
     private ?Agency $agency = null;
 
     #[ORM\Column]
+    #[Groups(['user:read'])]
     private bool $phoneVerified = false;
 
     #[ORM\Column]
+    #[Groups(['user:read'])]
     private bool $emailVerified = false;
 
     public function __construct()

@@ -2,10 +2,21 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\CountryRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CountryRepository::class)]
+#[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(paginationEnabled: false)
+    ],
+    normalizationContext: ['groups' => ['country:read']]
+)]
 class Country
 {
     #[
@@ -13,12 +24,15 @@ class Country
         ORM\GeneratedValue,
         ORM\Column
     ]
+    #[Groups(['country:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 2)]
+    #[Groups(['country:read'])]
     private ?string $code = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['country:read'])]
     private ?string $name = null;
 
     public function getId(): ?int
