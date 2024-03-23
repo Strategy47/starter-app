@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Trait;
 
 use ApiPlatform\Symfony\Bundle\Test\Client;
+use App\Entity\User;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectRepository;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 
 trait CommonTrait
@@ -29,11 +28,9 @@ trait CommonTrait
         $this->client->disableReboot();
     }
 
-    protected function createAuthenticatedClient(): void
+    protected function createAuthenticatedClient(User $user): void
     {
-        $userRepository = static::getContainer()->get(UserRepository::class);
         $jwtTokenManager = static::getContainer()->get(JWTTokenManagerInterface::class);
-        $user = $userRepository->findOneBy([]);
 
         $clientOptions = [
             'base_uri' => 'https://api.my-app.local:8000',
@@ -44,20 +41,64 @@ trait CommonTrait
         $this->client->disableReboot();
     }
 
-    protected function getEntityManager(): EntityManagerInterface
+    protected function findUserByRole(string $role): User
     {
-        $entityManager = self::getContainer()->get(EntityManagerInterface::class);
+        /** @var UserRepository $userRepository */
+        $userRepository = static::getContainer()->get(UserRepository::class);
 
-        if (!$entityManager instanceof EntityManagerInterface) {
-            throw new \LogicException(sprintf('%s is not a service.', EntityManagerInterface::class));
+        $qb = $userRepository->createQueryBuilder('u')
+            ->where('u.active = 1')
+            ->andWhere('u.emailVerified = 1')
+            ->andWhere('u.agency IS NULL')
+            ->andWhere('u.roles LIKE :role')
+            ->setParameter('role', $role);
+
+        $user = $qb->getQuery()->getOneOrNullResult();
+
+        if (!$user instanceof User) {
+            throw new \LogicException('user not found');
         }
 
-        return $entityManager;
+        return $user;
     }
 
-    protected function getRepository(string $class): ObjectRepository
+    protected function findUserWithoutRole(string $role): User
     {
-        return $this->getEntityManager()->getRepository($class);
+        /** @var UserRepository $userRepository */
+        $userRepository = static::getContainer()->get(UserRepository::class);
+
+        $qb = $userRepository->createQueryBuilder('u')
+            ->where('u.active = 1')
+            ->andWhere('u.emailVerified = 1')
+            ->andWhere('u.agency IS NULL')
+            ->andWhere('u.roles NOT LIKE :role')
+            ->setParameter('role', $role);
+
+        $user = $qb->getQuery()->getOneOrNullResult();
+
+        if (!$user instanceof User) {
+            throw new \LogicException('user not found');
+        }
+
+        return $user;
+    }
+
+    /**
+     * @return User[]
+     */
+    protected function findAllValidUsers(): array
+    {
+        /** @var UserRepository $userRepository */
+        $userRepository = static::getContainer()->get(UserRepository::class);
+
+        $qb = $userRepository->createQueryBuilder('u')
+            ->where('u.active = 1')
+            ->andWhere('u.emailVerified = 1 OR u.phoneVerified = 1')
+            ->leftJoin('u.agency', 'a')
+            ->andWhere('u.agency IS NULL OR a.active = 1')
+        ;
+
+        return $qb->getQuery()->getResult();
     }
 
     protected function hydra(string ...$messages): string

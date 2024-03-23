@@ -42,12 +42,16 @@ readonly class UserChecker implements UserCheckerInterface
 
         /** @var array<string> $requestContent */
         $requestContent = json_decode($this->request->getContent(), true);
+
+        if (!$requestContent) {
+            return;
+        }
+
         $identifier = array_key_exists('identifier', $requestContent) ? $requestContent['identifier'] : null;
 
-        if (array_key_exists('identifier', $requestContent)) {
-            if (!is_string($identifier)) {
-                throw new BadRequestHttpException('error.key.identifier');
-            }
+
+        if (!is_string($identifier)) {
+            throw new BadRequestHttpException('error.key.identifier');
         }
 
         if (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
