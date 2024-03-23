@@ -6,6 +6,7 @@ namespace App\Tests\Country;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Country;
 use App\Tests\Trait\CommonTrait;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Request;
 
 class ReadTest extends ApiTestCase
@@ -17,9 +18,7 @@ class ReadTest extends ApiTestCase
         $this->setUpClient();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userNotAuthenticatedShouldListCountries(): void
     {
         $countries = $this->getRepository(Country::class)->findAll();
@@ -44,9 +43,7 @@ class ReadTest extends ApiTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userNotAuthenticatedShouldGetCountry(): void
     {
         $country = $this->getRepository(Country::class)->findOneBy([]);
@@ -61,18 +58,14 @@ class ReadTest extends ApiTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function anybodyAuthenticatedShouldListCountries(): void
     {
         // Fixme: implement me
         self::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function anybodyAuthenticatedShouldGetCountry(): void
     {
         // Fixme: implement me

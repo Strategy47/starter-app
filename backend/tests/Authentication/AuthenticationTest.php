@@ -8,6 +8,7 @@ use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Tests\Trait\CommonTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use PHPUnit\Framework\Attributes\Test;
 
 class AuthenticationTest extends ApiTestCase
 {
@@ -18,8 +19,8 @@ class AuthenticationTest extends ApiTestCase
         $this->setUpClient();
     }
 
-    /** @test */
-    public function userShouldNotAuthenticateWithNoPhoneNoEmail(): void
+    #[Test]
+    public function userShouldNotAuthenticateWithoutPhoneAndEmail(): void
     {
         $this->client->request(Request::METHOD_POST, '/authenticate', [
             'json' => [
@@ -31,8 +32,8 @@ class AuthenticationTest extends ApiTestCase
         self::assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }
 
-    /** @test */
-    public function userShouldNotAuthenticateWithEmailWithoutPassword(): void
+    #[Test]
+    public function testUserShouldNotAuthenticateWithEmailWithoutPassword(): void
     {
         $this->client->request(Request::METHOD_POST, '/authenticate', [
             'json' => [
@@ -44,7 +45,7 @@ class AuthenticationTest extends ApiTestCase
         self::assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }
 
-    /** @test */
+    #[Test]
     public function userShouldNotAuthenticateWithPhoneWithoutPassword(): void
     {
         $this->client->request(Request::METHOD_POST, '/authenticate', [

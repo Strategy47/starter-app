@@ -6,9 +6,13 @@ namespace App\Tests\Authentication;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\DataFixtures\UserFixtures;
+use App\Repository\UserRepository;
 use App\Tests\Trait\CommonTrait;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use PHPUnit\Framework\Attributes\Test;
+use function Symfony\Component\String\s;
 
 class AuthenticationEmailTest extends ApiTestCase
 {
@@ -19,7 +23,7 @@ class AuthenticationEmailTest extends ApiTestCase
         $this->setUpClient();
     }
 
-    /** @test */
+    #[Test]
     public function userShouldAuthenticateWithEmail(): void
     {
         foreach (UserFixtures::$fixtures as $fixture) {
@@ -37,7 +41,7 @@ class AuthenticationEmailTest extends ApiTestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function userShouldAuthenticateWithEmailAndAgency(): void
     {
 
@@ -52,7 +56,7 @@ class AuthenticationEmailTest extends ApiTestCase
         self::assertArrayHasKey('token', $response);
     }
 
-    /** @test */
+    #[Test]
     public function userShouldNotAuthenticateWithInvalidCredentials(): void
     {
         // Test wrong credentials
@@ -69,7 +73,7 @@ class AuthenticationEmailTest extends ApiTestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function userShouldNotAuthenticateIfInactive(): void
     {
         $this->client->request(Request::METHOD_POST, '/authenticate', [
@@ -85,7 +89,7 @@ class AuthenticationEmailTest extends ApiTestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function userShouldNotAuthenticateIfInactiveAgency(): void
     {
         $this->client->request(Request::METHOD_POST, '/authenticate', [
@@ -101,7 +105,7 @@ class AuthenticationEmailTest extends ApiTestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function userShouldNotAuthenticateIfEmailNotValidate(): void
     {
         $this->client->request(Request::METHOD_POST, '/authenticate', [

@@ -9,6 +9,7 @@ use App\DataFixtures\UserFixtures;
 use App\Tests\Trait\CommonTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use PHPUnit\Framework\Attributes\Test;
 
 class AuthenticationPhoneTest extends ApiTestCase
 {
@@ -19,7 +20,7 @@ class AuthenticationPhoneTest extends ApiTestCase
         $this->setUpClient();
     }
 
-    /** @test */
+    #[Test]
     public function userShouldAuthenticateWithPhone(): void
     {
         foreach (UserFixtures::$fixtures as $fixture) {
@@ -38,7 +39,7 @@ class AuthenticationPhoneTest extends ApiTestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function userShouldAuthenticateWithPhoneAndAgency(): void
     {
         $response = $this->client->request(Request::METHOD_POST, '/authenticate', [
@@ -52,7 +53,7 @@ class AuthenticationPhoneTest extends ApiTestCase
         self::assertArrayHasKey('token', $response);
     }
 
-    /** @test */
+    #[Test]
     public function userShouldNotAuthenticateWithInvalidCredentials(): void
     {
         // Test wrong credentials
@@ -69,7 +70,7 @@ class AuthenticationPhoneTest extends ApiTestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function userShouldNotAuthenticateIfInactive(): void
     {
         $this->client->request(Request::METHOD_POST, '/authenticate', [
@@ -85,7 +86,7 @@ class AuthenticationPhoneTest extends ApiTestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function userShouldNotAuthenticateIfInactiveAgency(): void
     {
         $this->client->request(Request::METHOD_POST, '/authenticate', [
@@ -101,7 +102,7 @@ class AuthenticationPhoneTest extends ApiTestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function userShouldNotAuthenticateIfPhoneNotValidate(): void
     {
         $this->client->request(Request::METHOD_POST, '/authenticate', [

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Tests\Trait;
 
 use ApiPlatform\Symfony\Bundle\Test\Client;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 
 trait CommonTrait
 {
@@ -21,6 +23,21 @@ trait CommonTrait
     {
         $clientOptions = [
             'base_uri' => 'https://api.my-app.local:8000'
+        ];
+
+        $this->client = static::createClient([], $clientOptions);
+        $this->client->disableReboot();
+    }
+
+    protected function createAuthenticatedClient(): void
+    {
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $jwtTokenManager = static::getContainer()->get(JWTTokenManagerInterface::class);
+        $user = $userRepository->findOneBy([]);
+
+        $clientOptions = [
+            'base_uri' => 'https://api.my-app.local:8000',
+            'auth_bearer' => $jwtTokenManager->create($user)
         ];
 
         $this->client = static::createClient([], $clientOptions);

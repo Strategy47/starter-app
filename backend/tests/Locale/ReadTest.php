@@ -6,6 +6,7 @@ namespace App\Tests\Locale;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Locale;
 use App\Tests\Trait\CommonTrait;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Request;
 
 class ReadTest extends ApiTestCase
@@ -17,9 +18,7 @@ class ReadTest extends ApiTestCase
         $this->setUpClient();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userNotAuthenticatedShouldListLocales(): void
     {
         $locales = $this->getRepository(Locale::class)->findAll();
@@ -44,9 +43,7 @@ class ReadTest extends ApiTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userNotAuthenticatedShouldGetLocale(): void
     {
         $locale = $this->getRepository(Locale::class)->findOneBy([]);
@@ -61,18 +58,14 @@ class ReadTest extends ApiTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function anybodyAuthenticatedShouldListCountries(): void
     {
         // Fixme: implement me
         self::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function anybodyAuthenticatedShouldGetCountry(): void
     {
         // Fixme: implement me

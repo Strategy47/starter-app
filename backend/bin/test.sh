@@ -38,11 +38,6 @@ echo -e "\e[0Ksection_start:`date +%s`:pdepend_section[collapsed=true]\r\e[0K\e[
 ${PHP} vendor/pdepend/pdepend/src/bin/pdepend --jdepend-xml=build/test/dependencies.xml --jdepend-chart=build/report/dependencies.svg --overview-pyramid=build/report/dependencies-pyramid.svg src
 echo -e "\e[0Ksection_end:`date +%s`:pdepend_section\r\e[0K"
 
-# PHP LOC
-echo -e "\e[0Ksection_start:`date +%s`:phploc_section[collapsed=true]\r\e[0K\e[34mPHP LOC\e[0m"
-${PHP} vendor/phploc/phploc/phploc --log-xml build/test/loc.xml src
-echo -e "\e[0Ksection_end:`date +%s`:phploc_section\r\e[0K"
-
 # PHPStan
 echo -e "\e[0Ksection_start:`date +%s`:phpstan_section[collapsed=true]\r\e[0K\e[34mPHPStan\e[0m"
 ${PHP} vendor/bin/phpstan analyse --no-progress --memory-limit=-1
@@ -69,5 +64,5 @@ echo -e "\e[0Ksection_end:`date +%s`:validators_section\r\e[0K"
 
 # PHPUnit
 echo -e "\e[0Ksection_start:`date +%s`:phpunit_section[collapsed=true]\r\e[0K\e[34mRun PHPUnit\e[0m"
-XDEBUG_MODE=coverage ${PHP} -d memory_limit=-1 vendor/phpunit/phpunit/phpunit --coverage-xml build/coverage --log-junit build/test/xunit.xml
+${PHP} -d memory_limit=-1 vendor/phpunit/phpunit/phpunit --log-junit build/test/xunit.xml
 echo -e "\e[0Ksection_end:`date +%s`:phpunit_section\r\e[0K"
