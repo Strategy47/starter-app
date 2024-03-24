@@ -49,9 +49,8 @@ readonly class UserChecker implements UserCheckerInterface
 
         $identifier = array_key_exists('identifier', $requestContent) ? $requestContent['identifier'] : null;
 
-
-        if (!is_string($identifier)) {
-            throw new BadRequestHttpException('error.key.identifier');
+        if (null === $identifier) {
+            return;
         }
 
         if (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {

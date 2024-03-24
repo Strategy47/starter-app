@@ -107,7 +107,7 @@ class AuthenticationPhoneTest extends ApiTestCase
     {
         $this->client->request(Request::METHOD_POST, '/authenticate', [
             'json' => [
-                'identifier' => '+33555555555',
+                'identifier' => '+33655555555',
                 'password' => 'Pass_012',
             ],
         ]);

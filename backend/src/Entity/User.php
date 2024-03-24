@@ -6,10 +6,14 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\EntityListener\UserListener;
 use App\Repository\UserRepository;
+use App\Security\Voter\UserVoter;
+use App\Serializer\UserGroupsContextBuilder;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
@@ -29,12 +33,41 @@ use Symfony\Component\Security\Core\User\UserInterface;
     ORM\EntityListeners([UserListener::class])
 ]
 #[ApiResource(
+    uriTemplate: '/register',
+    operations: [
+        new Post()
+    ],
+    normalizationContext: ['groups' => ['user:read']],
+    denormalizationContext: ['groups' => ['user:write']],
+    openapiContext: [
+        'summary' => 'User registration',
+    ],
+    validationContext: ['groups' => ['Default', 'registration']]
+)]
+#[ApiResource(
     operations: [
         new Post(
-            uriTemplate: '/register',
-            validationContext: ['groups' => ['Default', 'registration']]
+            openapiContext: [
+                'summary' => 'Creates a User resource for administrator.',
+            ],
+            security: 'is_granted(\'' . User::ROLE_ADMIN . '\')'
+        ),
+        new Get(
+            openapiContext: [
+                'summary' => 'Retrieves a User resource for administrator.',
+            ],
+            security: 'is_granted(\'' . UserVoter::READ . '\', object)'
+        ),
+        new Patch(
+            openapiContext: [
+                'summary' => 'Updates the User resource for administrator.',
+            ],
+            security: 'is_granted(\'' . UserVoter::UPDATE . '\', object)'
         ),
         new GetCollection(
+            openapiContext: [
+                'summary' => 'Retrieves the collection of User resource for administrator.',
+            ],
             security: 'is_granted(\'' . User::ROLE_ADMIN . '\')'
         )
     ],
@@ -86,7 +119,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         allowNull: false,
         groups: ['registration']
     )]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['user:write'])]
     private string $password;
 
     #[ORM\Column(length: 255)]
@@ -129,7 +162,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column]
-    #[Groups(['user:read', 'user:admin:write'])]
+    #[Groups([
+        'user:read',
+        UserGroupsContextBuilder::CURRENT_USER_ADMIN_POST_GROUP,
+        UserGroupsContextBuilder::CURRENT_USER_ADMIN_UPDATE_GROUP,
+        UserGroupsContextBuilder::CURRENT_USER_ADMIN_READ_GROUP
+    ])]
     private bool $active = true;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
@@ -153,11 +191,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?Agency $agency = null;
 
     #[ORM\Column]
-    #[Groups(['user:read'])]
+    #[Groups([
+        'user:read',
+        UserGroupsContextBuilder::CURRENT_USER_ADMIN_POST_GROUP,
+        UserGroupsContextBuilder::CURRENT_USER_ADMIN_UPDATE_GROUP,
+        UserGroupsContextBuilder::CURRENT_USER_ADMIN_READ_GROUP
+    ])]
     private bool $phoneVerified = false;
 
     #[ORM\Column]
-    #[Groups(['user:read'])]
+    #[Groups([
+        'user:read',
+        UserGroupsContextBuilder::CURRENT_USER_ADMIN_POST_GROUP,
+        UserGroupsContextBuilder::CURRENT_USER_ADMIN_UPDATE_GROUP,
+        UserGroupsContextBuilder::CURRENT_USER_ADMIN_READ_GROUP
+    ])]
     private bool $emailVerified = false;
 
     public function __construct()

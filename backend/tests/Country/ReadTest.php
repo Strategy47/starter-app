@@ -21,7 +21,7 @@ class ReadTest extends ApiTestCase
     }
 
     #[Test]
-    public function userNotAuthenticatedShouldListCountries(): void
+    public function userShouldListCountries(): void
     {
         $countries = static::getContainer()->get(CountryRepository::class)->findAll();
         $assert = [];

@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Tests\Trait;
 
 use ApiPlatform\Symfony\Bundle\Test\Client;
+use App\Entity\Address;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+use libphonenumber\PhoneNumber;
 
 trait CommonTrait
 {
@@ -51,7 +53,7 @@ trait CommonTrait
             ->andWhere('u.emailVerified = 1')
             ->andWhere('u.agency IS NULL')
             ->andWhere('u.roles LIKE :role')
-            ->setParameter('role', $role);
+            ->setParameter('role', "%$role%");
 
         $user = $qb->getQuery()->getOneOrNullResult();
 
@@ -62,7 +64,10 @@ trait CommonTrait
         return $user;
     }
 
-    protected function findUserWithoutRole(string $role): User
+    /**
+     * @return User[]
+     */
+    protected function findUserWithoutRole(string $role): array
     {
         /** @var UserRepository $userRepository */
         $userRepository = static::getContainer()->get(UserRepository::class);
@@ -72,15 +77,9 @@ trait CommonTrait
             ->andWhere('u.emailVerified = 1')
             ->andWhere('u.agency IS NULL')
             ->andWhere('u.roles NOT LIKE :role')
-            ->setParameter('role', $role);
+            ->setParameter('role', "%$role%");
 
-        $user = $qb->getQuery()->getOneOrNullResult();
-
-        if (!$user instanceof User) {
-            throw new \LogicException('user not found');
-        }
-
-        return $user;
+        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -109,5 +108,47 @@ trait CommonTrait
     protected function createWarningMessage(string $messages): string
     {
         return "\e[43;30m INFO | $messages \e[0m \n";
+    }
+
+    protected function getIriFromItem(?object $item): ?string
+    {
+        if (!$item) {
+            return null;
+        }
+
+        $iri = static::getContainer()->get('api_platform.iri_converter')->getIriFromResource($item);
+
+        if (! is_string($iri)) {
+            return null;
+        }
+
+        return str_replace('//api.my-app.local', '', $iri);
+    }
+
+    protected function formatPhone(mixed $phone): ?string
+    {
+        if ($phone instanceof PhoneNumber) {
+            return sprintf('+%s%s',$phone->getCountryCode(), $phone->getNationalNumber());
+        }
+
+        return $phone;
+    }
+
+    /**
+     * @return array<string, string|null>
+     */
+    protected function formatAddress(?Address $address): ?array
+    {
+        if ($address) {
+            return [
+                'address' => $address->getAddress(),
+                'zipCode' => $address->getZipCode(),
+                'city' => $address->getCity(),
+                'country' => $this->getIriFromItem($address->getCountry())
+
+            ];
+        }
+
+        return null;
     }
 }
