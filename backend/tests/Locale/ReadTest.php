@@ -8,14 +8,14 @@ use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Locale;
 use App\Repository\LocaleRepository;
 use App\Tests\Trait\CommonTrait;
-use App\Tests\Trait\DataProvider\FormatDataProviderTrait;
+use App\Tests\Trait\DataProvider\LocaleProviderTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Request;
 
 class ReadTest extends ApiTestCase
 {
-    use CommonTrait, FormatDataProviderTrait;
+    use CommonTrait, LocaleProviderTrait;
 
     public function setUp(): void
     {
@@ -39,8 +39,8 @@ class ReadTest extends ApiTestCase
         // not authenticated user
         $this->client->request(Request::METHOD_GET, '/locales');
 
-        self::assertResponseIsSuccessful();
-        self::assertJsonContains([
+        static::assertResponseIsSuccessful();
+        static::assertJsonContains([
             'hydra:member' => array_slice($assert, 0, 30),
             'hydra:totalItems' => count($locales),
         ]);
@@ -52,8 +52,8 @@ class ReadTest extends ApiTestCase
 
             $this->client->request(Request::METHOD_GET, '/locales');
 
-            self::assertResponseIsSuccessful();
-            self::assertJsonContains([
+            static::assertResponseIsSuccessful();
+            static::assertJsonContains([
                 'hydra:member' => array_slice($assert, 0, 30),
                 'hydra:totalItems' => count($locales),
             ]);
@@ -67,8 +67,8 @@ class ReadTest extends ApiTestCase
         // not authenticated user
         $this->client->request(Request::METHOD_GET, sprintf('/locales/%s', $locale->getId()));
 
-        self::assertResponseIsSuccessful();
-        self::assertJsonContains([
+        static::assertResponseIsSuccessful();
+        static::assertJsonContains([
             'id' => $locale->getId(),
             'code' => $locale->getCode(),
             'name' => $locale->getName()
@@ -85,22 +85,12 @@ class ReadTest extends ApiTestCase
             $this->createAuthenticatedClient($user);
             $this->client->request(Request::METHOD_GET, sprintf('/locales/%s', $locale->getId()));
 
-            self::assertResponseIsSuccessful();
-            self::assertJsonContains([
+            static::assertResponseIsSuccessful();
+            static::assertJsonContains([
                 'id' => $locale->getId(),
                 'code' => $locale->getCode(),
                 'name' => $locale->getName()
             ]);
         }
-    }
-
-    /**
-     * @return array<int, array<Locale>>
-     */
-    public static function provideLocales(): array
-    {
-        $locales = static::getContainer()->get(LocaleRepository::class)->findAll();
-
-        return self::formatFixtureDataForDataProvider($locales);
     }
 }

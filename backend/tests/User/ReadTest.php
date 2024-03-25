@@ -6,16 +6,17 @@ namespace App\Tests\User;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\User;
-use App\Repository\UserRepository;
 use App\Tests\Trait\Assert\UserTrait;
 use App\Tests\Trait\CommonTrait;
+use App\Tests\Trait\DataProvider\UserProviderTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ReadTest extends ApiTestCase
 {
-    use CommonTrait, UserTrait;
+    use CommonTrait, UserTrait, UserProviderTrait;
 
     public function setUp(): void
     {
@@ -23,69 +24,53 @@ class ReadTest extends ApiTestCase
     }
 
     #[Test]
-    public function userNotAuthenticatedShouldNotGetUser(): void
+    #[DataProvider('provideAllUsersFromDoctrine')]
+    public function userNotAuthenticatedShouldNotGetUser(User $user): void
     {
-        /** @var User $user */
-        $user = static::getContainer()->get(UserRepository::class)->findOneBy([]);
-
         // not authenticated user
         $this->client->request(Request::METHOD_GET, sprintf('/users/%s', $user->getId()));
 
-        self::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
+        static::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
     }
 
     #[Test]
-    public function userAdminShouldGetUser(): void
+    #[DataProvider('provideAllUsersFromDoctrine')]
+    public function userAdminShouldGetUser(User $user): void
     {
-        /** @var User $user */
-        $user = static::getContainer()->get(UserRepository::class)->findOneBy([]);
-
         $this->createAuthenticatedClient(
             $this->findUserByRole(User::ROLE_ADMIN)
         );
         $this->client->request(Request::METHOD_GET, sprintf('/users/%s', $user->getId()));
 
-        self::assertResponseIsSuccessful();
-        self::assertJsonContains(
+        static::assertResponseIsSuccessful();
+        static::assertJsonContains(
             $this->generateUserAssert($user)
         );
     }
 
     #[Test]
-    public function usersShouldGetCurrentUser(): void
+    #[DataProvider('provideUsersNotAdminFromDoctrine')]
+    public function usersShouldGetCurrentUser(User $user): void
     {
-        $users = $this->findUserWithoutRole(User::ROLE_ADMIN);
+        $this->createAuthenticatedClient($user);
+        $this->client->request(Request::METHOD_GET, sprintf('/users/%s', $user->getId()));
 
-        foreach ($users as $user) {
-            $this->createAuthenticatedClient(
-                $user
-            );
-
-            $this->client->request(Request::METHOD_GET, sprintf('/users/%s', $user->getId()));
-
-            self::assertResponseIsSuccessful();
-            self::assertJsonContains(
-                $this->generateUserAssert($user)
-            );
-        }
+        static::assertResponseIsSuccessful();
+        static::assertJsonContains(
+            $this->generateUserAssert($user)
+        );
     }
 
     #[Test]
-    public function OtherUsersShouldNotGetUser(): void
+    #[DataProvider('provideUsersNotAdminFromDoctrine')]
+    public function OtherUsersShouldNotGetUser(User $user): void
     {
         /** @var int $userId */
         $userId = $this->findUserByRole(User::ROLE_ADMIN)->getId();
 
-        $users = $this->findUserWithoutRole(User::ROLE_ADMIN);
+        $this->createAuthenticatedClient($user);
+        $this->client->request(Request::METHOD_GET, sprintf('/users/%s', $userId));
 
-        foreach ($users as $user) {
-            $this->createAuthenticatedClient(
-                $user
-            );
-
-            $this->client->request(Request::METHOD_GET, sprintf('/users/%s', $userId));
-
-            self::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
-        }
+        static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 }

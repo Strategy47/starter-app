@@ -67,24 +67,6 @@ trait CommonTrait
     /**
      * @return User[]
      */
-    protected function findUserWithoutRole(string $role): array
-    {
-        /** @var UserRepository $userRepository */
-        $userRepository = static::getContainer()->get(UserRepository::class);
-
-        $qb = $userRepository->createQueryBuilder('u')
-            ->where('u.active = 1')
-            ->andWhere('u.emailVerified = 1')
-            ->andWhere('u.agency IS NULL')
-            ->andWhere('u.roles NOT LIKE :role')
-            ->setParameter('role', "%$role%");
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * @return User[]
-     */
     protected function findAllValidUsers(): array
     {
         /** @var UserRepository $userRepository */

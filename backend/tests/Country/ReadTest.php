@@ -8,15 +8,14 @@ use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Country;
 use App\Repository\CountryRepository;
 use App\Tests\Trait\CommonTrait;
-use App\Tests\Trait\DataProvider\FormatDataProviderTrait;
-use App\Tests\Trait\DataProvider\UserProviderTrait;
+use App\Tests\Trait\DataProvider\CountryProviderTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Request;
 
 class ReadTest extends ApiTestCase
 {
-    use CommonTrait, UserProviderTrait, FormatDataProviderTrait;
+    use CommonTrait, CountryProviderTrait;
 
     public function setUp(): void
     {
@@ -40,8 +39,8 @@ class ReadTest extends ApiTestCase
         // not authenticated user
         $this->client->request(Request::METHOD_GET, '/countries');
 
-        self::assertResponseIsSuccessful();
-        self::assertJsonContains([
+        static::assertResponseIsSuccessful();
+        static::assertJsonContains([
             'hydra:member' => array_slice($assert, 0, 30),
             'hydra:totalItems' => count($countries),
         ]);
@@ -53,8 +52,8 @@ class ReadTest extends ApiTestCase
 
             $this->client->request(Request::METHOD_GET, '/countries');
 
-            self::assertResponseIsSuccessful();
-            self::assertJsonContains([
+            static::assertResponseIsSuccessful();
+            static::assertJsonContains([
                 'hydra:member' => array_slice($assert, 0, 30),
                 'hydra:totalItems' => count($countries),
             ]);
@@ -68,8 +67,8 @@ class ReadTest extends ApiTestCase
         // not authenticated user
         $this->client->request(Request::METHOD_GET, sprintf('/countries/%s', $country->getId()));
 
-        self::assertResponseIsSuccessful();
-        self::assertJsonContains([
+        static::assertResponseIsSuccessful();
+        static::assertJsonContains([
             'id' => $country->getId(),
             'code' => $country->getCode(),
             'name' => $country->getName()
@@ -86,22 +85,12 @@ class ReadTest extends ApiTestCase
             $this->createAuthenticatedClient($user);
             $this->client->request(Request::METHOD_GET, sprintf('/countries/%s', $country->getId()));
 
-            self::assertResponseIsSuccessful();
-            self::assertJsonContains([
+            static::assertResponseIsSuccessful();
+            static::assertJsonContains([
                 'id' => $country->getId(),
                 'code' => $country->getCode(),
                 'name' => $country->getName()
             ]);
         }
-    }
-
-    /**
-     * @return array<int, array<Country>>
-     */
-    public static function provideCountries(): array
-    {
-        $countries = static::getContainer()->get(CountryRepository::class)->findAll();
-
-        return self::formatFixtureDataForDataProvider($countries);
     }
 }

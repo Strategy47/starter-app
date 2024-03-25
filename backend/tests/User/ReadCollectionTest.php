@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Tests\Trait\Assert\UserTrait;
 use App\Tests\Trait\CommonTrait;
+use App\Tests\Trait\DataProvider\UserProviderTrait;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +17,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class ReadCollectionTest extends ApiTestCase
 {
-    use CommonTrait, UserTrait;
+    use CommonTrait, UserTrait, UserProviderTrait;
 
     public function setUp(): void
     {
@@ -29,21 +30,18 @@ class ReadCollectionTest extends ApiTestCase
         // not authenticated user
         $this->client->request(Request::METHOD_GET, '/users');
 
-        self::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
+        static::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
     }
 
     #[Test]
-    public function userNotAdminShouldNotListUsers(): void
+    #[DataProvider('provideUsersNotAdminFromDoctrine')]
+    public function userNotAdminShouldNotListUsers(User $user): void
     {
-        $users = $this->findUserWithoutRole(User::ROLE_ADMIN);
+        static::createAuthenticatedClient($user);
 
-        foreach ($users as $user) {
-            $this->createAuthenticatedClient($user);
+        $this->client->request(Request::METHOD_GET, '/users');
 
-            $this->client->request(Request::METHOD_GET, '/users');
-
-            self::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
-        }
+        static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
     #[Test]
@@ -62,8 +60,8 @@ class ReadCollectionTest extends ApiTestCase
 
         $this->client->request(Request::METHOD_GET, '/users');
 
-        self::assertResponseIsSuccessful();
-        self::assertJsonContains([
+        static::assertResponseIsSuccessful();
+        static::assertJsonContains([
             'hydra:member' => array_slice($assert, 0, 30),
             'hydra:totalItems' => count($users)
         ]);

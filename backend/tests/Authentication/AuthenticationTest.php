@@ -6,7 +6,7 @@ namespace App\Tests\Authentication;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Tests\Trait\CommonTrait;
-use App\Tests\Trait\DataProvider\UserProviderTrait;
+use App\Tests\Trait\DataProvider\UserFixturesProviderTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +14,7 @@ use PHPUnit\Framework\Attributes\Test;
 
 class AuthenticationTest extends ApiTestCase
 {
-    use CommonTrait, UserProviderTrait;
+    use CommonTrait, UserFixturesProviderTrait;
 
     public function setUp(): void
     {
@@ -31,7 +31,7 @@ class AuthenticationTest extends ApiTestCase
             ],
         ]);
 
-        self::assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        static::assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -48,7 +48,7 @@ class AuthenticationTest extends ApiTestCase
             ],
         ]);
 
-        self::assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        static::assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -65,6 +65,6 @@ class AuthenticationTest extends ApiTestCase
             ],
         ]);
 
-        self::assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        static::assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }
 }

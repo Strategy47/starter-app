@@ -7,7 +7,7 @@ namespace App\Tests\Authentication;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\DataFixtures\UserFixtures;
 use App\Tests\Trait\CommonTrait;
-use App\Tests\Trait\DataProvider\UserProviderTrait;
+use App\Tests\Trait\DataProvider\UserFixturesProviderTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +15,7 @@ use PHPUnit\Framework\Attributes\Test;
 
 class AuthenticationPhoneTest extends ApiTestCase
 {
-    use CommonTrait, UserProviderTrait;
+    use CommonTrait, UserFixturesProviderTrait;
 
     public function setUp(): void
     {
@@ -36,8 +36,8 @@ class AuthenticationPhoneTest extends ApiTestCase
             ],
         ])->toArray();
 
-        self::assertResponseIsSuccessful();
-        self::assertArrayHasKey('token', $response);
+        static::assertResponseIsSuccessful();
+        static::assertArrayHasKey('token', $response);
     }
 
     #[Test]
@@ -50,8 +50,8 @@ class AuthenticationPhoneTest extends ApiTestCase
             ],
         ])->toArray();
 
-        self::assertResponseIsSuccessful();
-        self::assertArrayHasKey('token', $response);
+        static::assertResponseIsSuccessful();
+        static::assertArrayHasKey('token', $response);
     }
 
     #[Test]
@@ -65,8 +65,8 @@ class AuthenticationPhoneTest extends ApiTestCase
             ],
         ]);
 
-        self::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
-        self::assertJsonContains([
+        static::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
+        static::assertJsonContains([
             'message' => $this->hydra('error.user.invalid_credentials')
         ]);
     }
@@ -81,8 +81,8 @@ class AuthenticationPhoneTest extends ApiTestCase
             ],
         ]);
 
-        self::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
-        self::assertJsonContains([
+        static::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
+        static::assertJsonContains([
             'message' => $this->hydra('error.user.inactive')
         ]);
     }
@@ -97,8 +97,8 @@ class AuthenticationPhoneTest extends ApiTestCase
             ],
         ]);
 
-        self::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
-        self::assertJsonContains([
+        static::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
+        static::assertJsonContains([
             'message' => $this->hydra('error.agency.inactive')
         ]);
     }
@@ -117,8 +117,8 @@ class AuthenticationPhoneTest extends ApiTestCase
             ],
         ]);
 
-        self::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
-        self::assertJsonContains([
+        static::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
+        static::assertJsonContains([
             'message' => $this->hydra('error.user.phone_not_verified')
         ]);
     }

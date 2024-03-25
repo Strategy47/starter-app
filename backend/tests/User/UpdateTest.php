@@ -8,13 +8,15 @@ use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\User;
 use App\Tests\Trait\Assert\UserTrait;
 use App\Tests\Trait\CommonTrait;
+use App\Tests\Trait\DataProvider\UserProviderTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class UpdateTest extends ApiTestCase
 {
-    use CommonTrait, UserTrait;
+    use CommonTrait, UserTrait, UserProviderTrait;
 
     public function setUp(): void
     {
@@ -22,10 +24,9 @@ class UpdateTest extends ApiTestCase
     }
 
     #[Test]
-    public function userNotAuthenticatedShouldNotUpdateUser(): void
+    #[DataProvider('provideAllUsersFromDoctrine')]
+    public function userNotAuthenticatedShouldNotUpdateUser(User $user): void
     {
-        $user = $this->findUserByRole(User::ROLE_OWNER);
-
         // not authenticated user
         $this->client->request(Request::METHOD_PATCH, sprintf('/users/%s', $user->getId()),
         [
@@ -34,14 +35,13 @@ class UpdateTest extends ApiTestCase
             ]
         ]);
 
-        self::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
+        static::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
     }
 
     #[Test]
-    public function userAdminShouldUpdateUser(): void
+    #[DataProvider('provideAllUsersFromDoctrine')]
+    public function userAdminShouldUpdateUser(User $user): void
     {
-        $user = $this->findUserByRole(User::ROLE_OWNER);
-
         $this->createAuthenticatedClient(
             $this->findUserByRole(User::ROLE_ADMIN)
         );
@@ -57,20 +57,19 @@ class UpdateTest extends ApiTestCase
                 ]
             ]);
 
-        self::assertResponseIsSuccessful();
+        static::assertResponseIsSuccessful();
 
         $assert = $this->generateUserAssert($user);
         $assert['firstname'] = 'firstname';
         $assert['lastname'] = 'lastname';
 
-        self::assertJsonContains($assert);
+        static::assertJsonContains($assert);
     }
 
     #[Test]
-    public function userAdminShouldToggleActiveUser(): void
+    #[DataProvider('provideAllUsersFromDoctrine')]
+    public function userAdminShouldToggleActiveUser(User $user): void
     {
-        $user = $this->findUserByRole(User::ROLE_OWNER);
-
         $this->createAuthenticatedClient(
             $this->findUserByRole(User::ROLE_ADMIN)
         );
@@ -87,21 +86,20 @@ class UpdateTest extends ApiTestCase
                 ]
             ]);
 
-        self::assertResponseIsSuccessful();
+        static::assertResponseIsSuccessful();
 
         $assert = $this->generateUserAssert($user);
         $assert['active'] = !$user->isActive();
         $assert['phoneVerified'] = !$user->isPhoneVerified();
         $assert['emailVerified'] = !$user->isEmailVerified();
 
-        self::assertJsonContains($assert);
+        static::assertJsonContains($assert);
     }
 
     #[Test]
-    public function userNotAdminShouldNotToggleActiveUser(): void
+    #[DataProvider('provideUsersNotAdminFromDoctrine')]
+    public function userNotAdminShouldNotToggleActiveUser(User $user): void
     {
-        $user = $this->findUserByRole(User::ROLE_OWNER);
-
         $this->createAuthenticatedClient($user);
 
         $this->client->request(Request::METHOD_PATCH, sprintf('/users/%s', $user->getId()),
@@ -116,40 +114,37 @@ class UpdateTest extends ApiTestCase
                 ]
             ]);
 
-        self::assertResponseIsSuccessful();
+        static::assertResponseIsSuccessful();
 
         $assert = $this->generateUserAssert($user);
 
-        self::assertJsonContains($assert);
+        static::assertJsonContains($assert);
     }
 
     #[Test]
-    public function userShouldUpdateCurrentUser(): void
+    #[DataProvider('provideAllValidUsersFromDoctrine')]
+    public function userShouldUpdateCurrentUser(User $user): void
     {
-        $users = $this->findAllValidUsers();
+        $this->createAuthenticatedClient($user);
 
-        foreach ($users as $user) {
-            $this->createAuthenticatedClient($user);
+        $this->client->request(Request::METHOD_PATCH, sprintf('/users/%s', $user->getId()),
+            [
+                'json' => [
+                    'firstname' => 'firstname',
+                    'lastname' => 'lastname'
+                ],
+                'headers' => [
+                    'Content-Type' => 'application/merge-patch+json',
+                ]
+            ]);
 
-            $this->client->request(Request::METHOD_PATCH, sprintf('/users/%s', $user->getId()),
-                [
-                    'json' => [
-                        'firstname' => 'firstname',
-                        'lastname' => 'lastname'
-                    ],
-                    'headers' => [
-                        'Content-Type' => 'application/merge-patch+json',
-                    ]
-                ]);
+        static::assertResponseIsSuccessful();
 
-            self::assertResponseIsSuccessful();
+        $assert = $this->generateUserAssert($user);
+        $assert['firstname'] = 'firstname';
+        $assert['lastname'] = 'lastname';
 
-            $assert = $this->generateUserAssert($user);
-            $assert['firstname'] = 'firstname';
-            $assert['lastname'] = 'lastname';
-
-            self::assertJsonContains($assert);
-        }
+        static::assertJsonContains($assert);
     }
 
     public function anyBodyShouldNotUpdateUserWithNonUniqueEmail(): void
