@@ -12,6 +12,7 @@ use App\Tests\Trait\CommonTrait;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ReadCollectionTest extends ApiTestCase
 {

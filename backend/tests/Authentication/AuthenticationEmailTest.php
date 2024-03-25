@@ -5,46 +5,43 @@ declare(strict_types=1);
 namespace App\Tests\Authentication;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
-use App\DataFixtures\UserFixtures;
-use App\Repository\UserRepository;
 use App\Tests\Trait\CommonTrait;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+use App\Tests\Trait\DataProvider\UserProviderTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use PHPUnit\Framework\Attributes\Test;
-use function Symfony\Component\String\s;
 
 class AuthenticationEmailTest extends ApiTestCase
 {
-    use CommonTrait;
+    use CommonTrait, UserProviderTrait;
 
     public function setUp(): void
     {
         $this->setUpClient();
     }
 
+    /**
+     * @param array<mixed> $fixture
+     */
     #[Test]
-    public function userShouldAuthenticateWithEmail(): void
+    #[DataProvider('provideUsersWithVerifiedEmail')]
+    public function userShouldAuthenticateWithEmail(array $fixture): void
     {
-        foreach (UserFixtures::$fixtures as $fixture) {
-            if ($fixture['active'] && $fixture['emailVerified'] && !isset($fixture['agency'])) {
-                $response = $this->client->request(Request::METHOD_POST, '/authenticate', [
-                    'json' => [
-                        'identifier' => $fixture['email'],
-                        'password' => $fixture['password'],
-                    ],
-                ])->toArray();
+        $response = $this->client->request(Request::METHOD_POST, '/authenticate', [
+            'json' => [
+                'identifier' => $fixture['email'],
+                'password' => $fixture['password'],
+            ],
+        ])->toArray();
 
-                self::assertResponseIsSuccessful();
-                self::assertArrayHasKey('token', $response);
-            }
-        }
+        self::assertResponseIsSuccessful();
+        self::assertArrayHasKey('token', $response);
     }
 
     #[Test]
     public function userShouldAuthenticateWithEmailAndAgency(): void
     {
-
         $response = $this->client->request(Request::METHOD_POST, '/authenticate', [
             'json' => [
                 'identifier' => 'dev-agency-active@my-app.loc',
@@ -105,13 +102,17 @@ class AuthenticationEmailTest extends ApiTestCase
         ]);
     }
 
+    /**
+     * @param array<mixed> $fixture
+     */
     #[Test]
-    public function userShouldNotAuthenticateIfEmailNotValidate(): void
+    #[DataProvider('provideUsersWithNotVerifiedEmail')]
+    public function userShouldNotAuthenticateIfEmailNotVerified(array $fixture): void
     {
         $this->client->request(Request::METHOD_POST, '/authenticate', [
             'json' => [
-                'identifier' => 'dev-no-email@my-app.loc',
-                'password' => 'Pass_012',
+                'identifier' => $fixture['email'],
+                'password' => $fixture['password'],
             ],
         ]);
 

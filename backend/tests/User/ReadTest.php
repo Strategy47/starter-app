@@ -74,7 +74,7 @@ class ReadTest extends ApiTestCase
     public function OtherUsersShouldNotGetUser(): void
     {
         /** @var int $userId */
-        $userId = $this->findUserByRole(User::ROLE_OWNER)->getId();
+        $userId = $this->findUserByRole(User::ROLE_ADMIN)->getId();
 
         $users = $this->findUserWithoutRole(User::ROLE_ADMIN);
 

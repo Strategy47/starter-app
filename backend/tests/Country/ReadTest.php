@@ -8,12 +8,15 @@ use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Country;
 use App\Repository\CountryRepository;
 use App\Tests\Trait\CommonTrait;
+use App\Tests\Trait\DataProvider\FormatDataProviderTrait;
+use App\Tests\Trait\DataProvider\UserProviderTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Request;
 
 class ReadTest extends ApiTestCase
 {
-    use CommonTrait;
+    use CommonTrait, UserProviderTrait, FormatDataProviderTrait;
 
     public function setUp(): void
     {
@@ -59,11 +62,9 @@ class ReadTest extends ApiTestCase
     }
 
     #[Test]
-    public function anybodyShouldGetCountry(): void
+    #[DataProvider('provideCountries')]
+    public function userNotAuthenticatedShouldGetCountry(Country $country): void
     {
-        /** @var Country $country */
-        $country = static::getContainer()->get(CountryRepository::class)->findOneBy([]);
-
         // not authenticated user
         $this->client->request(Request::METHOD_GET, sprintf('/countries/%s', $country->getId()));
 
@@ -73,8 +74,14 @@ class ReadTest extends ApiTestCase
             'code' => $country->getCode(),
             'name' => $country->getName()
         ]);
+    }
 
+    #[Test]
+    #[DataProvider('provideCountries')]
+    public function userAuthenticatedShouldGetCountry(Country $country): void
+    {
         $users = $this->findAllValidUsers();
+
         foreach ($users as $user) {
             $this->createAuthenticatedClient($user);
             $this->client->request(Request::METHOD_GET, sprintf('/countries/%s', $country->getId()));
@@ -86,5 +93,15 @@ class ReadTest extends ApiTestCase
                 'name' => $country->getName()
             ]);
         }
+    }
+
+    /**
+     * @return array<int, array<Country>>
+     */
+    public static function provideCountries(): array
+    {
+        $countries = static::getContainer()->get(CountryRepository::class)->findAll();
+
+        return self::formatFixtureDataForDataProvider($countries);
     }
 }

@@ -6,13 +6,15 @@ namespace App\Tests\Authentication;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Tests\Trait\CommonTrait;
+use App\Tests\Trait\DataProvider\UserProviderTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use PHPUnit\Framework\Attributes\Test;
 
 class AuthenticationTest extends ApiTestCase
 {
-    use CommonTrait;
+    use CommonTrait, UserProviderTrait;
 
     public function setUp(): void
     {
@@ -32,12 +34,16 @@ class AuthenticationTest extends ApiTestCase
         self::assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }
 
+    /**
+     * @param array<mixed> $fixture
+     */
     #[Test]
-    public function testUserShouldNotAuthenticateWithEmailWithoutPassword(): void
+    #[DataProvider('provideUsersWithVerifiedEmail')]
+    public function testUserShouldNotAuthenticateWithEmailWithoutPassword(array $fixture): void
     {
         $this->client->request(Request::METHOD_POST, '/authenticate', [
             'json' => [
-                'identifier' => 'dev-admin@my-app.loc',
+                'identifier' => $fixture['email'],
                 'nie' => 'Pass_123',
             ],
         ]);
@@ -45,12 +51,16 @@ class AuthenticationTest extends ApiTestCase
         self::assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }
 
+    /**
+     * @param array<mixed> $fixture
+     */
     #[Test]
-    public function userShouldNotAuthenticateWithPhoneWithoutPassword(): void
+    #[DataProvider('provideUsersWithVerifiedPhone')]
+    public function userShouldNotAuthenticateWithPhoneWithoutPassword(array $fixture): void
     {
         $this->client->request(Request::METHOD_POST, '/authenticate', [
             'json' => [
-                'identifier' => '0611111111',
+                'identifier' => $fixture['phone'],
                 'nie' => 'Pass_123',
             ],
         ]);

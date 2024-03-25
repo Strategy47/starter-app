@@ -7,36 +7,37 @@ namespace App\Tests\Authentication;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\DataFixtures\UserFixtures;
 use App\Tests\Trait\CommonTrait;
+use App\Tests\Trait\DataProvider\UserProviderTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use PHPUnit\Framework\Attributes\Test;
 
 class AuthenticationPhoneTest extends ApiTestCase
 {
-    use CommonTrait;
+    use CommonTrait, UserProviderTrait;
 
     public function setUp(): void
     {
         $this->setUpClient();
     }
 
+    /**
+     * @param array<mixed> $fixture
+     */
     #[Test]
-    public function userShouldAuthenticateWithPhone(): void
+    #[DataProvider('provideUsersWithVerifiedPhone')]
+    public function userShouldAuthenticateWithPhone(array $fixture): void
     {
-        foreach (UserFixtures::$fixtures as $fixture) {
+        $response = $this->client->request(Request::METHOD_POST, '/authenticate', [
+            'json' => [
+                'identifier' => $fixture['phone'],
+                'password' => $fixture['password'],
+            ],
+        ])->toArray();
 
-            if ($fixture['active'] && $fixture['phoneVerified'] && isset($fixture['phone']) && !isset($fixture['agency'])) {
-                $response = $this->client->request(Request::METHOD_POST, '/authenticate', [
-                    'json' => [
-                        'identifier' => $fixture['phone'],
-                        'password' => $fixture['password'],
-                    ],
-                ])->toArray();
-
-                self::assertResponseIsSuccessful();
-                self::assertArrayHasKey('token', $response);
-            }
-        }
+        self::assertResponseIsSuccessful();
+        self::assertArrayHasKey('token', $response);
     }
 
     #[Test]
@@ -102,13 +103,17 @@ class AuthenticationPhoneTest extends ApiTestCase
         ]);
     }
 
+    /**
+     * @param array<mixed> $fixture
+     */
     #[Test]
-    public function userShouldNotAuthenticateIfPhoneNotValidate(): void
+    #[DataProvider('provideUsersWithNotVerifiedPhone')]
+    public function userShouldNotAuthenticateIfPhoneNotVerified(array $fixture): void
     {
         $this->client->request(Request::METHOD_POST, '/authenticate', [
             'json' => [
-                'identifier' => '+33655555555',
-                'password' => 'Pass_012',
+                'identifier' => $fixture['phone'],
+                'password' => $fixture['password']
             ],
         ]);
 

@@ -8,12 +8,14 @@ use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Locale;
 use App\Repository\LocaleRepository;
 use App\Tests\Trait\CommonTrait;
+use App\Tests\Trait\DataProvider\FormatDataProviderTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Request;
 
 class ReadTest extends ApiTestCase
 {
-    use CommonTrait;
+    use CommonTrait, FormatDataProviderTrait;
 
     public function setUp(): void
     {
@@ -59,11 +61,9 @@ class ReadTest extends ApiTestCase
     }
 
     #[Test]
-    public function anyBodyShouldGetLocale(): void
+    #[DataProvider('provideLocales')]
+    public function userNotAuthenticatedShouldGetLocale(Locale $locale): void
     {
-        /** @var Locale $locale */
-        $locale = static::getContainer()->get(LocaleRepository::class)->findOneBy([]);
-
         // not authenticated user
         $this->client->request(Request::METHOD_GET, sprintf('/locales/%s', $locale->getId()));
 
@@ -73,8 +73,14 @@ class ReadTest extends ApiTestCase
             'code' => $locale->getCode(),
             'name' => $locale->getName()
         ]);
+    }
 
+    #[Test]
+    #[DataProvider('provideLocales')]
+    public function userAuthenticatedShouldGetLocale(Locale $locale): void
+    {
         $users = $this->findAllValidUsers();
+
         foreach ($users as $user) {
             $this->createAuthenticatedClient($user);
             $this->client->request(Request::METHOD_GET, sprintf('/locales/%s', $locale->getId()));
@@ -86,5 +92,15 @@ class ReadTest extends ApiTestCase
                 'name' => $locale->getName()
             ]);
         }
+    }
+
+    /**
+     * @return array<int, array<Locale>>
+     */
+    public static function provideLocales(): array
+    {
+        $locales = static::getContainer()->get(LocaleRepository::class)->findAll();
+
+        return self::formatFixtureDataForDataProvider($locales);
     }
 }
