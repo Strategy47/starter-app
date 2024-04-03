@@ -147,13 +147,105 @@ class UpdateTest extends ApiTestCase
         static::assertJsonContains($assert);
     }
 
-    public function anyBodyShouldNotUpdateUserWithNonUniqueEmail(): void
+    #[Test]
+    #[DataProvider('provideUsersNotAdminFromDoctrine')]
+    public function userShouldNotUpdateRolesCurrentUser(User $user): void
     {
-        // FIXME: implement me
+        $this->createAuthenticatedClient($user);
+
+        $this->client->request(Request::METHOD_PATCH, sprintf('/users/%s', $user->getId()),
+            [
+                'json' => [
+                    'roles' => User::ROLES
+                ],
+                'headers' => [
+                    'Content-Type' => 'application/merge-patch+json',
+                ]
+            ]);
+
+        static::assertResponseIsSuccessful();
+
+        $assert = $this->generateUserAssert($user);
+        $assert['roles'] = $user->getRoles();
+
+        static::assertJsonContains($assert);
     }
 
-    public function anyBodyShouldNotUpdateUserWithNonUniquePhone(): void
+    #[Test]
+    #[DataProvider('provideAllValidUsersFromDoctrine')]
+    public function adminShouldUpdateUsersRoles(User $user): void
     {
-        // FIXME: implement me
+        $this->createAuthenticatedClient(
+            $this->findUserByRole(User::ROLE_ADMIN)
+        );
+
+        $this->client->request(Request::METHOD_PATCH, sprintf('/users/%s', $user->getId()),
+            [
+                'json' => [
+                    'roles' => User::ROLES
+                ],
+                'headers' => [
+                    'Content-Type' => 'application/merge-patch+json',
+                ]
+            ]);
+
+        static::assertResponseIsSuccessful();
+
+        $assert = $this->generateUserAssert($user);
+        $assert['roles'] = User::ROLES;
+
+        static::assertJsonContains($assert);
+    }
+
+    #[Test]
+    #[DataProvider('provideAllValidUsersFromDoctrine')]
+    public function anyBodyShouldNotUpdateUserWithNonUniqueEmail(User $user): void
+    {
+        $nonUniqueEmail = $user->getEmail() === 'dev-admin@my-app.loc' ? 'dev-agency@my-app.loc' : 'dev-admin@my-app.loc';
+
+        $this->createAuthenticatedClient($user);
+
+        $this->client->request(Request::METHOD_PATCH, sprintf('/users/%s', $user->getId()),
+            [
+                'json' => [
+                    'email' => $nonUniqueEmail
+                ],
+                'headers' => [
+                    'Content-Type' => 'application/merge-patch+json',
+                ]
+            ]);
+
+        static::assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
+        static::assertJsonContains([
+            'hydra:description' => $this->hydra(
+                'email: error.email.unique',
+            ),
+        ]);
+    }
+
+    #[Test]
+    #[DataProvider('provideAllValidUsersFromDoctrine')]
+    public function anyBodyShouldNotUpdateUserWithNonUniquePhone(User $user): void
+    {
+        $nonUniquePhone = $user->getPhone()?->getNationalNumber() === '611111111' ? '+33622222222' : '+33611111111';
+
+        $this->createAuthenticatedClient($user);
+
+        $this->client->request(Request::METHOD_PATCH, sprintf('/users/%s', $user->getId()),
+            [
+                'json' => [
+                    'phone' => $nonUniquePhone
+                ],
+                'headers' => [
+                    'Content-Type' => 'application/merge-patch+json',
+                ]
+            ]);
+
+        static::assertResponseStatusCodeSame(Response::HTTP_UNPROCESSABLE_ENTITY);
+        static::assertJsonContains([
+            'hydra:description' => $this->hydra(
+                'phone: error.phone.unique',
+            ),
+        ]);
     }
 }

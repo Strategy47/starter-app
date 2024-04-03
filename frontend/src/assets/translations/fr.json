@@ -1,0 +1,50 @@
+{
+  "menu": {
+    "home": "Accueil",
+    "properties": "Propriétés",
+    "transactions": "Transactions",
+    "accounting": "Compta",
+    "course": "Parcours",
+    "logout" : "Deconnexion",
+    "documents": "Documents",
+    "bankAccounts": "Documents",
+    "subscription": "Abonnement"
+  },
+  "account" : {
+    "personalInformations": "Informations personnelles",
+    "firstname": "Prénom",
+    "lastname": "Nom",
+    "email": "Adresse email",
+    "mobile": "Téléphone portable"
+  },
+  "address": {
+    "address": "Adresse",
+    "name": "Nom",
+    "supplement":  "Complément d'address",
+    "zipCode" : "Code postale",
+    "city" : "Ville",
+    "country": "Pays"
+  },
+  "update": "Sauvegarder",
+  "updateSuccess": "Mise à jour avec succès",
+  "auth": {
+    "sign_in": "Connexion",
+    "welcome_back": "Bienvenue de retour sur Lyncis Gestion !",
+    "email_phone": "Email ou téléphone",
+    "password": "Mot de passe",
+    "enter_password": "Entrer le mot de passe",
+    "forgot_password": "Mot de passe oublié ?",
+    "sign_up": "S'inscrire",
+    "email": "Email",
+    "phone": "Téléphone",
+    "enter_email": "Entrer l'email",
+    "enter_phone": "Entrer le téléphone",
+    "forgot_password_info": "Renseigner email ou téléphone",
+    "or": "ou alors"
+  },
+  "error" : {
+    "user": {
+      "invalid_credentials": "Identifiants incorrects"
+    }
+  }
+}

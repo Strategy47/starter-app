@@ -6,6 +6,7 @@ namespace App\Tests\Trait;
 
 use ApiPlatform\Symfony\Bundle\Test\Client;
 use App\Entity\Address;
+use App\Entity\Locale;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
@@ -23,7 +24,11 @@ trait CommonTrait
     protected function setUpClient(): void
     {
         $clientOptions = [
-            'base_uri' => 'https://api.my-app.local:8000'
+            'base_uri' => 'https://api.my-app.local:8000',
+            'headers' => [
+                'Content-Type' => 'application/ld+json; charset=utf-8',
+                'Accept' => 'application/ld+json',
+            ],
         ];
 
         $this->client = static::createClient([], $clientOptions);
@@ -36,7 +41,11 @@ trait CommonTrait
 
         $clientOptions = [
             'base_uri' => 'https://api.my-app.local:8000',
-            'auth_bearer' => $jwtTokenManager->create($user)
+            'auth_bearer' => $jwtTokenManager->create($user),
+            'headers' => [
+                'Content-Type' => 'application/ld+json; charset=utf-8',
+                'Accept' => 'application/ld+json',
+            ],
         ];
 
         $this->client = static::createClient([], $clientOptions);
@@ -128,6 +137,23 @@ trait CommonTrait
                 'city' => $address->getCity(),
                 'country' => $this->getIriFromItem($address->getCountry())
 
+            ];
+        }
+
+        return null;
+    }
+
+    /**
+     * @return array<string, string|null>
+     */
+    protected function formatLocale(?Locale $locale): ?array
+    {
+        if ($locale) {
+            return [
+                '@id' => $this->getIriFromItem($locale),
+                'id' => $locale->getId(),
+                'code' => $locale->getCode(),
+                'name' => $locale->getName()
             ];
         }
 

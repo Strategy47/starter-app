@@ -6,16 +6,20 @@ namespace App\Tests\Country;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Country;
+use App\Entity\User;
 use App\Repository\CountryRepository;
 use App\Tests\Trait\CommonTrait;
 use App\Tests\Trait\DataProvider\CountryProviderTrait;
+use App\Tests\Trait\DataProvider\UserProviderTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Request;
 
 class ReadTest extends ApiTestCase
 {
-    use CommonTrait, CountryProviderTrait;
+    use CommonTrait, CountryProviderTrait, UserProviderTrait;
+
+    private static ?array $assert = null;
 
     public function setUp(): void
     {
@@ -23,41 +27,29 @@ class ReadTest extends ApiTestCase
     }
 
     #[Test]
-    public function userShouldListCountries(): void
+    public function userNotAuthenticatedShouldListCountries(): void
     {
-        $countries = static::getContainer()->get(CountryRepository::class)->findAll();
-        $assert = [];
-
-        foreach ($countries as $country) {
-            $assert[] = [
-                'id' => $country->getId(),
-                'code' => $country->getCode(),
-                'name' => $country->getName()
-            ];
-        }
-
         // not authenticated user
         $this->client->request(Request::METHOD_GET, '/countries');
 
         static::assertResponseIsSuccessful();
-        static::assertJsonContains([
-            'hydra:member' => array_slice($assert, 0, 30),
-            'hydra:totalItems' => count($countries),
-        ]);
+        static::assertJsonContains(
+            static::getAssertList()
+        );
+    }
 
-        $users = $this->findAllValidUsers();
+    #[Test]
+    #[DataProvider('provideAllValidUsersFromDoctrine')]
+    public function usersAuthenticatedShouldListCountries(User $user): void
+    {
+        $this->createAuthenticatedClient($user);
 
-        foreach ($users as $user) {
-            $this->createAuthenticatedClient($user);
+        $this->client->request(Request::METHOD_GET, '/countries');
 
-            $this->client->request(Request::METHOD_GET, '/countries');
-
-            static::assertResponseIsSuccessful();
-            static::assertJsonContains([
-                'hydra:member' => array_slice($assert, 0, 30),
-                'hydra:totalItems' => count($countries),
-            ]);
-        }
+        static::assertResponseIsSuccessful();
+        static::assertJsonContains(
+            static::getAssertList()
+        );
     }
 
     #[Test]
@@ -92,5 +84,28 @@ class ReadTest extends ApiTestCase
                 'name' => $country->getName()
             ]);
         }
+    }
+
+    public static function getAssertList(): array
+    {
+        if(is_null(self::$assert)) {
+            $countries = static::getContainer()->get(CountryRepository::class)->findAll();
+            $assert = [];
+
+            foreach ($countries as $country) {
+                $assert[] = [
+                    'id' => $country->getId(),
+                    'code' => $country->getCode(),
+                    'name' => $country->getName()
+                ];
+            }
+
+            self::$assert = [
+                'hydra:member' => array_slice($assert, 0, 30),
+                'hydra:totalItems' => count($countries),
+            ];
+        }
+
+        return self::$assert;
     }
 }

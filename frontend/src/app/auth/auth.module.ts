@@ -1,20 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-
 import { AuthPageRoutingModule } from './auth-routing.module';
-
 import { AuthPage } from './auth.page';
+import { TranslateModule } from '@ngx-translate/core';
+import { AddressFormComponent } from '../shared/components/address-form/address-form.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule,
-    AuthPageRoutingModule
+    ReactiveFormsModule,
+    IonicModule.forRoot(),
+    AuthPageRoutingModule,
+    ReactiveFormsModule,
+    TranslateModule,
   ],
-  declarations: [AuthPage]
+  declarations: [
+    AuthPage,
+    AddressFormComponent
+  ]
 })
 export class AuthPageModule {}

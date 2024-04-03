@@ -1,0 +1,50 @@
+{
+  "menu": {
+    "home": "Home",
+    "properties": "Properties",
+    "transactions": "Transactions",
+    "accounting": "Accounting",
+    "course": "Course",
+    "logout" : "Logout",
+    "documents": "Documents",
+    "bankAccounts": "Bank Accounts",
+    "subscription": "Subscription"
+  },
+  "account" : {
+    "personalInformations": "Personal Informations",
+    "firstname": "Firstname",
+    "lastname": "Lastname",
+    "email": "E-mail",
+    "mobile": "Mobile phone"
+  },
+  "address": {
+    "address": "Address",
+    "name": "name",
+    "supplement":  "Address supplement",
+    "zipCode" : "Zip Code",
+    "city" : "City",
+    "country": "Country"
+  },
+  "update": "update",
+  "updateSuccess": "Update success",
+  "auth" : {
+    "sign_in": "Sign In",
+    "welcome_back": "Welcome back to Lyncis Gestion !",
+    "email_phone": "Email or phone",
+    "password": "Password",
+    "enter_password": "Enter password",
+    "forgot_password": "Forgot password ?",
+    "sign_up": "Sign Up",
+    "email": "Email",
+    "phone": "Phone",
+    "enter_email": "Enter email",
+    "enter_phone": "Enter phone",
+    "forgot_password_info": "Enter email or phone",
+    "or": "or"
+  },
+  "error" : {
+    "user": {
+      "invalid_credentials": "Invalid credentials"
+    }
+  }
+}

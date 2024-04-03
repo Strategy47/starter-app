@@ -6,16 +6,20 @@ namespace App\Tests\Locale;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Locale;
+use App\Entity\User;
 use App\Repository\LocaleRepository;
 use App\Tests\Trait\CommonTrait;
 use App\Tests\Trait\DataProvider\LocaleProviderTrait;
+use App\Tests\Trait\DataProvider\UserProviderTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Request;
 
 class ReadTest extends ApiTestCase
 {
-    use CommonTrait, LocaleProviderTrait;
+    use CommonTrait, LocaleProviderTrait, UserProviderTrait;
+
+    private static ?array $assert = null;
 
     public function setUp(): void
     {
@@ -23,41 +27,29 @@ class ReadTest extends ApiTestCase
     }
 
     #[Test]
-    public function anyBodyShouldListLocales(): void
+    public function userNotAuthenticatedShouldListLocales(): void
     {
-        $locales = static::getContainer()->get(LocaleRepository::class)->findAll();
-        $assert = [];
-
-        foreach ($locales as $locale) {
-            $assert[] = [
-                'id' => $locale->getId(),
-                'code' => $locale->getCode(),
-                'name' => $locale->getName()
-            ];
-        }
-
         // not authenticated user
         $this->client->request(Request::METHOD_GET, '/locales');
 
         static::assertResponseIsSuccessful();
-        static::assertJsonContains([
-            'hydra:member' => array_slice($assert, 0, 30),
-            'hydra:totalItems' => count($locales),
-        ]);
+        static::assertJsonContains(
+            static::getAssertList()
+        );
+    }
 
-        $users = $this->findAllValidUsers();
+    #[Test]
+    #[DataProvider('provideAllValidUsersFromDoctrine')]
+    public function usersAuthenticatedShouldListLocales(User $user): void
+    {
+        $this->createAuthenticatedClient($user);
 
-        foreach ($users as $user) {
-            $this->createAuthenticatedClient($user);
+        $this->client->request(Request::METHOD_GET, '/locales');
 
-            $this->client->request(Request::METHOD_GET, '/locales');
-
-            static::assertResponseIsSuccessful();
-            static::assertJsonContains([
-                'hydra:member' => array_slice($assert, 0, 30),
-                'hydra:totalItems' => count($locales),
-            ]);
-        }
+        static::assertResponseIsSuccessful();
+        static::assertJsonContains(
+            static::getAssertList()
+        );
     }
 
     #[Test]
@@ -92,5 +84,28 @@ class ReadTest extends ApiTestCase
                 'name' => $locale->getName()
             ]);
         }
+    }
+
+    public static function getAssertList(): array
+    {
+        if(is_null(self::$assert)) {
+            $locales = static::getContainer()->get(LocaleRepository::class)->findAll();
+            $assert = [];
+
+            foreach ($locales as $locale) {
+                $assert[] = [
+                    'id' => $locale->getId(),
+                    'code' => $locale->getCode(),
+                    'name' => $locale->getName()
+                ];
+            }
+
+            self::$assert = [
+                'hydra:member' => array_slice($assert, 0, 30),
+                'hydra:totalItems' => count($locales),
+            ];
+        }
+
+        return self::$assert;
     }
 }

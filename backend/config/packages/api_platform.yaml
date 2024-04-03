@@ -1,7 +1,10 @@
 api_platform:
     title: Hello %app_name%
     version: 1.0.0
+    patch_formats:
+        json: [ 'application/merge-patch+json' ]
     formats:
+        json: ['application/json']
         jsonld: ['application/ld+json']
     docs_formats:
         jsonld: ['application/ld+json']

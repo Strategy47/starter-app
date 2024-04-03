@@ -26,7 +26,7 @@ trait UserTrait
             'active' => $user->isActive(),
             'phone' => $this->formatPhone($user->getPhone()),
             'address' => $this->formatAddress($user->getAddress()),
-            'locale' => $this->getIriFromItem($user->getLocale()),
+            'locale' => $this->formatLocale($user->getLocale()),
             'phoneVerified' => $user->isPhoneVerified(),
             'emailVerified' => $user->isEmailVerified()
         ];

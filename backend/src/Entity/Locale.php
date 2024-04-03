@@ -26,15 +26,15 @@ class Locale
         ORM\GeneratedValue,
         ORM\Column
     ]
-    #[Groups(['locale:read'])]
+    #[Groups(['locale:read', 'user:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 2)]
-    #[Groups(['locale:read'])]
+    #[Groups(['locale:read', 'user:read'])]
     private ?string $code = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['locale:read'])]
+    #[Groups(['locale:read', 'user:read'])]
     private ?string $name = null;
 
     public function getId(): ?int

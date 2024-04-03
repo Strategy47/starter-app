@@ -1,13 +1,134 @@
-<ion-header [translucent]="true">
+<ion-header class="ion-container">
   <ion-toolbar>
-    <ion-title>auth</ion-title>
+    <div class="toolbar-wrapper">
+      <ion-buttons slot="start" routerLink="/home">
+        <img src="assets/logo/logo.jpg" alt="logo" style="width: 140px; height: 140px">
+      </ion-buttons>
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">auth</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <section class="section-wrapper">
+    <ion-segment [(ngModel)]="selectedSegment" color="dark">
+      <ion-segment-button value="signIn">
+        <ion-label>{{ 'auth.sign_in' | translate }}</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="signUp">
+        <ion-label>{{ 'auth.sign_up' | translate }}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <ion-card style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;" *ngIf="selectedSegment === 'signIn'">
+      <ion-card-header>
+        <ion-card-title>{{ 'auth.sign_in' | translate }}</ion-card-title>
+        <ion-card-subtitle>{{ 'auth.welcome_back' | translate }}</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <form action="" [formGroup]="signInForm" (submit)="onSubmit()">
+          <div class="form-input-wrapper">
+            <ion-input #identfier label="{{ 'auth.email_phone' | translate }}" label-placement="floating" fill="outline" type="text"
+                       placeholder="{{ 'auth.email_phone' | translate }}" formControlName="identifier"></ion-input>
+            <ion-input #password label="{{ 'auth.password' | translate }}" type="password" label-placement="floating" fill="outline"
+                       placeholder="{{ 'auth.enter_password' | translate }}" formControlName="password"></ion-input>
+          </div>
+          <div class="forgot-pass" routerLink="/auth/forgot-password">{{ 'auth.forgot_password' | translate }}</div>
+          <button type="submit" class="sign-in-btn" [disabled]="signInForm.invalid"
+                  [class.sign-in-btn-disabled]="signInForm.invalid">
+            {{ 'auth.sign_in' | translate }}
+          </button>
+        </form>
+        <div></div>
+      </ion-card-content>
+    </ion-card>
+
+
+    <ion-card style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;" *ngIf="selectedSegment === 'signUp'">
+      <ion-card-header>
+        <ion-card-title>{{ 'auth.sign_up' | translate }}</ion-card-title>
+        <ion-card-subtitle>Become our member !</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <form action="" [formGroup]="signUpForm" (submit)="onSubmitSignUp()">
+          <div class="form-input-wrapper">
+            <div class="input-wrapper">
+              <div class="input-label">Pourquoi vous inscrivez-vous ?</div>
+              <ion-select
+                label="Type de compte"
+                formControlName="role"
+                fill="outline"
+                interface="popover"
+                placeholder="choose one"
+                label-placement="floating"
+                [formControl]="rolePreferenceCtrl"
+              >
+                <ion-select-option value="owner">Propriétaire</ion-select-option>
+                <ion-select-option value="tenant">Locataire</ion-select-option>
+                <ion-select-option value="agency">Agency</ion-select-option>
+              </ion-select>
+            </div>
+
+            <div class="input-wrapper">
+              <ion-input label="Firstname" type="text" label-placement="floating" fill="outline"
+                         placeholder="Enter firstname" formControlName="firstname"></ion-input>
+            </div>
+            <div class="input-wrapper">
+              <ion-input label="Lastname" type="text" label-placement="floating" fill="outline"
+                         placeholder="Enter lastname" formControlName="lastname"></ion-input>
+            </div>
+            <div class="input-wrapper">
+              <ion-select
+                label="Selectionnez votre langue"
+                formControlName="locale"
+                fill="outline"
+                interface="popover"
+                placeholder="choose one"
+                label-placement="floating"
+              >
+                <ion-select-option
+                  *ngFor="let locale of locales"
+                  [value]="locale['@id']"
+                >{{ locale.name }}</ion-select-option>
+              </ion-select>
+            </div>
+
+            <app-address-form (addressChanged)="onAddressChanged($event)"></app-address-form>
+
+            <div [formGroup]="agencyCtrl" *ngIf="showAgencyCtrl$ | async">
+              <div class="input-wrapper">
+                <ion-input label="Name" type="text" label-placement="floating" fill="outline"
+                           placeholder="Enter name" formControlName="name"></ion-input>
+
+                <ion-input label="Siret" type="text" label-placement="floating" fill="outline"
+                           placeholder="Enter name" formControlName="siret"></ion-input>
+              </div>
+            </div>
+            <div class="input-wrapper">
+              <ion-input label="Email address" label-placement="floating" fill="outline" type="email"
+                         placeholder="Enter email" formControlName="email"></ion-input>
+              <span *ngIf="signUpForm.controls.email.errors?.['email']">Email must be valid</span>
+              <span *ngIf="signUpForm.controls.email.errors?.['require']">Email must not be empty</span>
+            </div>
+
+            <ion-input label="Password" type="password" label-placement="floating" fill="outline"
+                       placeholder="Enter password" formControlName="password"></ion-input>
+
+            <div class="input-wrapper">
+              <ion-input label="Phone" type="text" label-placement="floating" fill="outline"
+                         placeholder="Enter phone" formControlName="phone"></ion-input>
+              <span *ngIf="signUpForm.controls.phone.errors?.['minlength']">Phone must be at least 10 characters</span>
+              <span *ngIf="signUpForm.controls.phone.errors?.['maxlength']">Phone must be below 11 characters</span>
+              <span *ngIf="signUpForm.controls.phone.errors?.['require']">Phone must not be empty</span>
+            </div>
+          </div>
+          <button type="submit" class="sign-up-btn" [disabled]="signUpForm.invalid"
+                  [class.sign-up-btn-disabled]="signUpForm.invalid">Sign Up</button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </section>
 </ion-content>
+
+

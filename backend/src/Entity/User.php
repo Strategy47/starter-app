@@ -14,6 +14,7 @@ use App\EntityListener\UserListener;
 use App\Repository\UserRepository;
 use App\Security\Voter\UserVoter;
 use App\Serializer\UserGroupsContextBuilder;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
@@ -38,7 +39,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
         new Post()
     ],
     normalizationContext: ['groups' => ['user:read']],
-    denormalizationContext: ['groups' => ['user:write']],
+    denormalizationContext: ['groups' => ['user:write', 'user:registration:write']],
     openapiContext: [
         'summary' => 'User registration',
     ],
@@ -74,6 +75,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
     normalizationContext: ['groups' => ['user:read']],
     denormalizationContext: ['groups' => ['user:write']]
 )]
+#[
+    UniqueEntity('email', message: 'error.email.unique', groups: ['Default']),
+    UniqueEntity('phone', message: 'error.phone.unique', groups: ['Default'])
+]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public const ROLE_ADMIN = 'ROLE_ADMIN';
@@ -107,7 +112,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var list<string> The user roles
      */
     #[ORM\Column]
-    #[Groups(['user:read'])]
+    #[Groups([
+        'user:read',
+        'user:registration:write',
+        UserGroupsContextBuilder::CURRENT_USER_ADMIN_POST_GROUP,
+        UserGroupsContextBuilder::CURRENT_USER_ADMIN_UPDATE_GROUP,
+        UserGroupsContextBuilder::CURRENT_USER_ADMIN_READ_GROUP
+    ])]
     private array $roles = [];
 
     /**
