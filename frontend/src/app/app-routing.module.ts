@@ -1,5 +1,9 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AdminGuard } from './core/guard/admin.guard';
+import { AgencyGuard } from './core/guard/agency.guard';
+import { OwnerGuard } from './core/guard/owner.guard';
+import { TenantGuard } from './core/guard/tenant.guard';
 
 const routes: Routes = [
   {
@@ -17,19 +21,23 @@ const routes: Routes = [
   },
   {
     path: 'admin',
-    loadChildren: () => import('./admin/admin.module').then( m => m.AdminPageModule)
+    loadChildren: () => import('./admin/admin.module').then( m => m.AdminPageModule),
+    canActivate: [AdminGuard]
   },
   {
     path: 'agency',
-    loadChildren: () => import('./agency/agency.module').then( m => m.AgencyPageModule)
+    loadChildren: () => import('./agency/agency.module').then( m => m.AgencyPageModule),
+    canActivate: [AgencyGuard]
   },
   {
     path: 'tenant',
-    loadChildren: () => import('./tenant/tenant.module').then( m => m.TenantPageModule)
+    loadChildren: () => import('./tenant/tenant.module').then( m => m.TenantPageModule),
+    canActivate: [TenantGuard]
   },
   {
     path: 'owner',
-    loadChildren: () => import('./owner/owner.module').then( m => m.OwnerPageModule)
+    loadChildren: () => import('./owner/owner.module').then( m => m.OwnerPageModule),
+    canActivate: [OwnerGuard]
   },
   {
     path: '404',

@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { SignInInterface, SignUpInterface } from '../../shared/interfaces/auth.interface';
 import { UserInterface } from '../../shared/interfaces/user.interface';
 import { catchError, map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class AuthenticationService {
   constructor(
     private storageService:StorageService,
     private http: HttpClient,
+    private router: Router,
     ) {
   }
 
@@ -56,5 +58,19 @@ export class AuthenticationService {
       return false;
 
     return !this.isTokenExpired(token);
+  }
+
+  public redirectUserByRole(roles: string[]): void {
+    if (roles.includes('ROLE_ADMIN')) {
+      this.router.navigateByUrl('/admin', { replaceUrl: true });
+    } else if (roles.includes('ROLE_OWNER')) {
+      this.router.navigateByUrl('/owner', { replaceUrl: true });
+    } else if (roles.includes('ROLE_TENANT')) {
+      this.router.navigateByUrl('/tenant', { replaceUrl: true });
+    } else if (roles.includes('ROLE_AGENCY')) {
+      this.router.navigateByUrl('/agency', { replaceUrl: true });
+    } else {
+      this.router.navigateByUrl('/auth', { replaceUrl: true });
+    }
   }
 }

@@ -73,7 +73,7 @@
         const user: UserInterface = decodedToken['user'];
         console.log(user, action.token, decodedToken);
         this.store.dispatch(UserActions.setUser({ user }));
-        this.router.navigateByUrl('/home', {replaceUrl: true})
+        this.authService.redirectUserByRole(user.roles);
       })
     ), { dispatch: false });
 

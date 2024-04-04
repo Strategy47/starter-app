@@ -24,3 +24,175 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+
+$breakpoints: (
+  phone: 466px,
+  tablet: 768px,
+  tablet-lg: 1024px,
+  desktop: 1025px,
+  desktop-lg: 1600px
+);
+@mixin for-size($breakpoint) {
+
+
+  @if map-has-key($breakpoints, $breakpoint) {
+
+
+    $breakpoint-value: map-get($breakpoints, $breakpoint);
+
+    //Build media query
+    @media (max-width: $breakpoint-value) {
+
+      @content;
+    }
+  }
+}
+
+
+ion-segment{
+  width: 35%;
+  border-radius: 10px;
+  @include for-size(tablet){
+    width: 57%;
+  }
+  @include for-size(phone){
+    width: 90%;
+  }
+}
+
+ion-label{
+  color: grey;
+}
+
+ion-buttons{
+  display: flex;
+  align-items: center;
+}
+
+ion-button span{
+  font-size: 0.5rem;
+}
+
+ion-button ion-icon{
+  font-size: 0.85rem;
+}
+
+.section-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  row-gap: 10px;
+}
+
+ion-card{
+  border-radius: 10px;
+  width: 80%;
+  max-width: 500px;
+  padding: 40px 20px;
+  @include for-size(phone){
+    width: 90%;
+  }
+}
+
+ion-card-header{
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+ion-card-title{
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+form{
+  .form-input-wrapper{
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+  }
+
+  form-input-wrapper-sign-up{
+    display: flex;
+    flex-direction: row;
+    row-gap: 30px;
+
+    .form-left, .form-right{
+      width: 50%;
+    }
+  }
+}
+
+.forgot-pass{
+  text-align: right;
+  padding: 10px 0 30px;
+  cursor: pointer;
+  &:hover{
+    text-decoration: underline;
+  }
+}
+
+.spinner{
+  margin-left: 10px;
+}
+
+.sign-in-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 20px 0;
+  text-align: center;
+  border-radius: 10px;
+  background-color: #00B87C;
+  color: #fff;
+  transition: ease-in-out 0.3s;
+  &:active{
+    background-color: white;
+    color: #00B87C;
+  }
+}
+
+.sign-up-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+  padding: 20px 0;
+  text-align: center;
+  border-radius: 10px;
+  background-color: #00B87C;
+  color: #fff;
+  transition: ease-in-out 0.3s;
+  &:active{
+    background-color: white;
+    color: #00B87C;
+  }
+}
+
+.sign-in-btn-disabled {
+  background-color: lightgray;
+  color: darkgray;
+  cursor: not-allowed;
+}
+
+.sign-up-btn-disabled {
+  background-color: lightgray;
+  color: darkgray;
+  cursor: not-allowed;
+}
+
+.input-wrapper{
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.error{
+  color: red;
+  font-size: 0.8rem;
+  font-weight: 400;
+  margin-top: 5px;
+}
