@@ -26,7 +26,6 @@ export class CountryService {
               return of([]);
             }),
             map(response => {
-              console.log(response)
               const countries = response['hydra:member'] as CountryInterface[];
               this.storageService.set(this.countriesStorageKey, countries);
               return countries;

@@ -19,6 +19,9 @@ class ReadTest extends ApiTestCase
 {
     use CommonTrait, CountryProviderTrait, UserProviderTrait;
 
+    /**
+     * @var array<string, mixed>
+     */
     private static ?array $assert = null;
 
     public function setUp(): void
@@ -86,6 +89,9 @@ class ReadTest extends ApiTestCase
         }
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public static function getAssertList(): array
     {
         if(is_null(self::$assert)) {

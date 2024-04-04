@@ -144,7 +144,7 @@ trait CommonTrait
     }
 
     /**
-     * @return array<string, string|null>
+     * @return array<string, int|string|null>
      */
     protected function formatLocale(?Locale $locale): ?array
     {

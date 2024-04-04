@@ -25,7 +25,6 @@ export class LocaleService {
               return of([]);
             }),
             map(response => {
-              console.log(response)
               const locales = response['hydra:member'] as LocaleInterface[];
               this.storageService.set(this.localesStorageKey, locales);
               return locales;

@@ -71,7 +71,6 @@
 
         let decodedToken = jwtDecode(action.token) as { [key: string]: any };
         const user: UserInterface = decodedToken['user'];
-        console.log(user, action.token, decodedToken);
         this.store.dispatch(UserActions.setUser({ user }));
         this.authService.redirectUserByRole(user.roles);
       })
@@ -114,8 +113,8 @@
       ofType(AuthActions.registerSuccess),
       tap((action) => {
         this.toastService.presentToast("Sign up success!", 4000, 'custom-success-toast');
-        console.log(action.user)
-        // this.router.navigateByUrl('/home', {replaceUrl: true})
+
+         this.router.navigateByUrl('/verify', {replaceUrl: true})
       })
     ), { dispatch: false });
 

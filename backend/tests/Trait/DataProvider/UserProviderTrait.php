@@ -46,6 +46,10 @@ trait UserProviderTrait
 
         return static::formatFixtureDataForDataProvider($qb->getQuery()->getResult());
     }
+
+    /**
+     * @return array<int, array<User>>
+     */
     public static function provideAllUsersFromDoctrine(): array
     {
         /** @var UserRepository $userRepository */

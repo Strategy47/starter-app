@@ -8,14 +8,14 @@ use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Events;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 #[AsEventListener(event: Events::JWT_CREATED, method: 'onJWTCreated')]
 class JWTCreatedListener
 {
     public function __construct(
         private readonly Security $security,
-        private readonly SerializerInterface $serializer,
+        private readonly NormalizerInterface $serializer,
         private readonly IriConverterInterface $iriConverter
     ) {
     }
@@ -29,9 +29,10 @@ class JWTCreatedListener
         }
 
         $userToArray = $this->serializer->normalize($user, null, ['groups' => 'user:read']);
-        $payload       = $event->getData();
+        $payload     = $event->getData();
 
         $payload['user'] = $userToArray;
+        /** @phpstan-ignore-next-line **/
         $payload['user']['@id'] = $this->iriConverter->getIriFromResource($user);
 
         if ($user->getLocale() && $payload['user']['locale']) {

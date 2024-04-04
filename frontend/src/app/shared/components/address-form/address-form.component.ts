@@ -40,7 +40,6 @@ export class AddressFormComponent  implements OnInit {
     try {
       const countriesData = await this.countryService.getCountries().toPromise();
       this.countries = countriesData || [];
-      console.log(this.countries)
     } catch (error) {
       console.error('Error loading countries:', error);
     }

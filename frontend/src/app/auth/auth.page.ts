@@ -154,7 +154,6 @@ export class AuthPage implements OnInit, OnDestroy {
     try {
       const localeData = await this.localeService.getLocales().toPromise();
       this.locales = localeData || [];
-      console.log(this.locales)
     } catch (error) {
       console.error('Error loading countries:', error);
     }
