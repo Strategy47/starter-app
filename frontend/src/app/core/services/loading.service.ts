@@ -17,6 +17,7 @@ export class LoadingService {
 
   async present(message: string) {
       if (!this.isLoading) {
+        this.isLoading = true;
         const loading = await this.loadingController.create({
           message: message,
         });

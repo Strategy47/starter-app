@@ -1,4 +1,5 @@
 {
+  "loading_msg": "Chargement en cours...",
   "menu": {
     "home": "Accueil",
     "properties": "Propriétés",
@@ -40,11 +41,29 @@
     "enter_email": "Entrer l'email",
     "enter_phone": "Entrer le téléphone",
     "forgot_password_info": "Renseigner email ou téléphone",
-    "or": "ou alors"
+    "or": "ou alors",
+    "become_member": "Devenez notre membre !",
+    "i_am": "Je suis",
+    "account_type": "Type de compte",
+    "owner": "Propriétaire",
+    "tenant": "Locataire",
+    "agency": "Agence",
+    "select_language": "Choisir la langue",
+    "agency_name": "Nom de l'agence",
+    "siret": "SIRET"
   },
   "error" : {
     "user": {
       "invalid_credentials": "Identifiants incorrects"
+    },
+    "phone": {
+      "min_characters": "Le numéro de téléphone doit comporter au moins 10 caractères",
+      "max_characters": "Le numéro de téléphone doit comporter moins de 11 caractères",
+      "empty": "Le numéro de téléphone ne doit pas être vide"
+    },
+    "email": {
+      "invalid": "L'adresse e-mail doit être valide",
+      "empty": "L'adresse e-mail ne doit pas être vide"
     }
   }
 }

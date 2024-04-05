@@ -44,19 +44,19 @@
     </ion-card>
 
 
-    <ion-card style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;" *ngIf="selectedSegment === 'signUp'">
+    <ion-card style="box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;" *ngIf="selectedSegment === 'signUp'">
       <ion-card-header>
         <ion-card-title>{{ 'auth.sign_up' | translate }}</ion-card-title>
-        <ion-card-subtitle>Become our member !</ion-card-subtitle>
+        <ion-card-subtitle>{{ 'auth.become_member' | translate }}</ion-card-subtitle>
       </ion-card-header>
 
       <ion-card-content>
         <form action="" [formGroup]="signUpForm" (submit)="onSubmitSignUp()">
           <div class="form-input-wrapper">
             <div class="input-wrapper">
-              <div class="input-label">Pourquoi vous inscrivez-vous ?</div>
+              <div class="input-label">{{ 'auth.i_am' | translate }}</div>
               <ion-select
-                label="Type de compte"
+                label="{{ 'auth.account_type' | translate }}"
                 formControlName="role"
                 fill="outline"
                 interface="popover"
@@ -64,28 +64,37 @@
                 label-placement="floating"
                 [formControl]="rolePreferenceCtrl"
               >
-                <ion-select-option value="ROLE_OWNER">Propriétaire</ion-select-option>
-                <ion-select-option value="ROLE_TENANT">Locataire</ion-select-option>
-                <ion-select-option value="ROLE_ADGENCY">Agency</ion-select-option>
+                <ion-select-option value="ROLE_OWNER">{{ 'auth.owner' | translate }}</ion-select-option>
+                <ion-select-option value="ROLE_TENANT">{{ 'auth.tenant' | translate }}</ion-select-option>
+                <ion-select-option value="ROLE_AGENCY">{{ 'auth.agency' | translate }}</ion-select-option>
               </ion-select>
             </div>
+            <div [formGroup]="agencyCtrl" *ngIf="showAgencyCtrl$ | async">
+              <div class="input-wrapper">
+                <ion-input label="{{ 'auth.agency_name' | translate }}" type="text" label-placement="floating" fill="outline"
+                           placeholder="{{ 'auth.agency_name' | translate }}" formControlName="name"></ion-input>
 
-            <div class="input-wrapper">
-              <ion-input label="Firstname" type="text" label-placement="floating" fill="outline"
-                         placeholder="Enter firstname" formControlName="firstname"></ion-input>
+                <ion-input label="{{ 'auth.siret' | translate }}" type="text" label-placement="floating" fill="outline"
+                           placeholder="{{ 'auth.siret' | translate }}" formControlName="siret"></ion-input>
+              </div>
             </div>
             <div class="input-wrapper">
-              <ion-input label="Lastname" type="text" label-placement="floating" fill="outline"
-                         placeholder="Enter lastname" formControlName="lastname"></ion-input>
+              <ion-input label="{{ 'account.firstname' | translate }}" type="text" label-placement="floating" fill="outline"
+                         placeholder="{{ 'account.firstname' | translate }}" formControlName="firstname"></ion-input>
+            </div>
+            <div class="input-wrapper">
+              <ion-input label="{{ 'account.lastname' | translate }}" type="text" label-placement="floating" fill="outline"
+                         placeholder="{{ 'account.lastname' | translate }}" formControlName="lastname"></ion-input>
             </div>
             <div class="input-wrapper">
               <ion-select
-                label="Selectionnez votre langue"
+                label="{{ 'auth.select_language' | translate }}"
                 formControlName="locale"
                 fill="outline"
                 interface="popover"
                 placeholder="choose one"
                 label-placement="floating"
+                (ionChange)="switchLanguage($event)"
               >
                 <ion-select-option
                   *ngFor="let locale of locales"
@@ -96,35 +105,26 @@
 
             <app-address-form (addressChanged)="onAddressChanged($event)"></app-address-form>
 
-            <div [formGroup]="agencyCtrl" *ngIf="showAgencyCtrl$ | async">
-              <div class="input-wrapper">
-                <ion-input label="Name" type="text" label-placement="floating" fill="outline"
-                           placeholder="Enter name" formControlName="name"></ion-input>
-
-                <ion-input label="Siret" type="text" label-placement="floating" fill="outline"
-                           placeholder="Enter name" formControlName="siret"></ion-input>
-              </div>
-            </div>
             <div class="input-wrapper">
-              <ion-input label="Email address" label-placement="floating" fill="outline" type="email"
-                         placeholder="Enter email" formControlName="email"></ion-input>
-              <span *ngIf="signUpForm.controls.email.errors?.['email']">Email must be valid</span>
-              <span *ngIf="signUpForm.controls.email.errors?.['require']">Email must not be empty</span>
+              <ion-input label="{{ 'auth.email' | translate }}" label-placement="floating" fill="outline" type="email"
+                         placeholder="{{ 'auth.enter_email' | translate }}" formControlName="email"></ion-input>
+              <span *ngIf="signUpForm.controls.email.errors?.['email']">{{ 'error.email.invalid' | translate }}</span>
+              <span *ngIf="signUpForm.controls.email.errors?.['require']">{{ 'error.email.empty' | translate }}</span>
             </div>
 
-            <ion-input label="Password" type="password" label-placement="floating" fill="outline"
-                       placeholder="Enter password" formControlName="password"></ion-input>
+            <ion-input label="{{ 'auth.password' | translate }}" type="password" label-placement="floating" fill="outline"
+                       placeholder="{{ 'auth.enter_password' | translate }}" formControlName="password"></ion-input>
 
             <div class="input-wrapper">
-              <ion-input label="Phone" type="text" label-placement="floating" fill="outline"
-                         placeholder="Enter phone" formControlName="phone"></ion-input>
-              <span *ngIf="signUpForm.controls.phone.errors?.['minlength']">Phone must be at least 10 characters</span>
-              <span *ngIf="signUpForm.controls.phone.errors?.['maxlength']">Phone must be below 11 characters</span>
-              <span *ngIf="signUpForm.controls.phone.errors?.['require']">Phone must not be empty</span>
+              <ion-input label="{{ 'auth.phone' | translate }}" type="text" label-placement="floating" fill="outline"
+                         placeholder="{{ 'auth.enter_phone' | translate }}" formControlName="phone"></ion-input>
+              <span *ngIf="signUpForm.controls.phone.errors?.['minlength']">{{ 'error.phone.min_characters' | translate }}</span>
+              <span *ngIf="signUpForm.controls.phone.errors?.['maxlength']">{{ 'error.phone.max_characters' | translate }}</span>
+              <span *ngIf="signUpForm.controls.phone.errors?.['require']">{{ 'error.phone.empty' | translate }}</span>
             </div>
           </div>
           <button type="submit" class="sign-up-btn" [disabled]="signUpForm.invalid"
-                  [class.sign-up-btn-disabled]="signUpForm.invalid">Sign Up</button>
+                  [class.sign-up-btn-disabled]="signUpForm.invalid">{{ 'auth.sign_up' | translate }}</button>
         </form>
       </ion-card-content>
     </ion-card>

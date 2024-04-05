@@ -1,24 +1,21 @@
 <div [formGroup]="addressForm">
   <div class="input-wrapper">
-    <ion-input label="Address" type="text" label-placement="floating" fill="outline"
-               placeholder="Enter address" formControlName="address"></ion-input>
+    <ion-input label="{{ 'address.address' | translate }}" type="text" label-placement="floating" fill="outline"
+               placeholder="{{ 'address.address' | translate }}" formControlName="address"></ion-input>
 
-    <ion-input label="addressSupplement" type="text" label-placement="floating" fill="outline"
-               placeholder="Enter addressSupplement" formControlName="addressSupplement"></ion-input>
+    <ion-input label="{{ 'address.supplement' | translate }}" type="text" label-placement="floating" fill="outline"
+               placeholder="{{ 'address.supplement' | translate }}" formControlName="addressSupplement"></ion-input>
 
-    <ion-input label="zipCode" type="text" label-placement="floating" fill="outline"
-               placeholder="Enter zipCode" formControlName="zipCode"></ion-input>
-    <ion-input label="city" type="text" label-placement="floating" fill="outline"
-               placeholder="Enter city" formControlName="city"></ion-input>
-
-
+    <ion-input label="{{ 'address.zipCode' | translate }}" type="text" label-placement="floating" fill="outline"
+               placeholder="{{ 'address.zipCode' | translate }}" formControlName="zipCode"></ion-input>
+    <ion-input label="{{ 'address.city' | translate }}" type="text" label-placement="floating" fill="outline"
+               placeholder="{{ 'address.city' | translate }}" formControlName="city"></ion-input>
 
     <ion-select
-      label="Selectionnez votre pays"
+      label="{{ 'address.country' | translate }}"
       formControlName="country"
       fill="outline"
       interface="popover"
-      placeholder="choose one"
       label-placement="floating"
     >
       <ion-select-option
@@ -26,7 +23,5 @@
         [value]="country['@id']"
       >{{ country.name }}</ion-select-option>
     </ion-select>
-
-
   </div>
 </div>

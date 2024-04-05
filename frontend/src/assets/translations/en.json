@@ -1,4 +1,5 @@
 {
+  "loading_msg": "Loading...",
   "menu": {
     "home": "Home",
     "properties": "Properties",
@@ -40,11 +41,29 @@
     "enter_email": "Enter email",
     "enter_phone": "Enter phone",
     "forgot_password_info": "Enter email or phone",
-    "or": "or"
+    "or": "or",
+    "become_member": "Become our member !",
+    "i_am": "I am",
+    "account_type": "Account type",
+    "owner": "Owner",
+    "tenant": "Tenant",
+    "agency": "Agency",
+    "select_language": "Select language",
+    "agency_name": "Agency name",
+    "siret": "SIRET"
   },
   "error" : {
     "user": {
       "invalid_credentials": "Invalid credentials"
+    },
+    "phone": {
+      "min_characters": "Phone must be at least 10 characters",
+      "max_characters": "Phone must be below 11 characters",
+      "empty": "Phone must not be empty"
+    },
+    "email": {
+      "invalid": "Email must be valid",
+      "empty": "Email must not be empty"
     }
   }
 }

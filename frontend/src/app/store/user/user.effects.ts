@@ -15,8 +15,7 @@ export class UserEffects {
     private actions$: Actions,
     private userService: UserService,
     private storageService: StorageService,
-    private toastService: ToastService,
-    private translate: TranslateService ,
+    private translate: TranslateService
   ) {}
 
   loadUser$ = createEffect(() => this.actions$.pipe(

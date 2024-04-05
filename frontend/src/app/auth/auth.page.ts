@@ -10,6 +10,7 @@ import { LoadingService } from '../core/services/loading.service';
 import { AddressValidator } from '../shared/components/address-form/address-validator';
 import { LocaleService } from '../core/services/locale.service';
 import { LocaleInterface } from '../shared/interfaces/locale.interface';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-auth',
@@ -52,6 +53,7 @@ export class AuthPage implements OnInit, OnDestroy {
               private navbarService: NavbarService,
               private store: Store,
               private localeService: LocaleService,
+              private translate: TranslateService
   ) {
     this.navbarService.currentSelectedSegment.subscribe(segment => {
       this.selectedSegment = segment;
@@ -67,7 +69,7 @@ export class AuthPage implements OnInit, OnDestroy {
 
     this.store.select(authSelector.selectIsLoading).subscribe(isLoading => {
       if (isLoading) {
-        this.loadingService.present('Chargement en cours...');
+        this.loadingService.present(this.translate.instant('loading_msg'));
       } else {
         this.loadingService.dismiss();
       }
@@ -75,7 +77,7 @@ export class AuthPage implements OnInit, OnDestroy {
 
     this.showAgencyCtrl$ = this.rolePreferenceCtrl.valueChanges.pipe(
       startWith(this.rolePreferenceCtrl.value),
-      map(preference => preference === 'agency'),
+      map(preference => preference === 'ROLE_AGENCY'),
       tap(showAgencyCtrl => this.setAgencyValidators(showAgencyCtrl))
     );
   }
@@ -158,5 +160,13 @@ export class AuthPage implements OnInit, OnDestroy {
       console.error('Error loading countries:', error);
     }
     this.loadingLocales = false;
+  }
+
+  switchLanguage(event: CustomEvent) {
+    this.localeService.getLocaleByIri(event.detail.value).then(locale => {
+      if (locale) {
+        this.translate.use(locale.code);
+      }
+    });
   }
 }

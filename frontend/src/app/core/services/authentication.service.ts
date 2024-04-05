@@ -13,8 +13,6 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  public isAuthenticated : BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
   constructor(
     private storageService:StorageService,
     private http: HttpClient,

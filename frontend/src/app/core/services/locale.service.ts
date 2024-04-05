@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { StorageService } from './storage.service';
-import { from, Observable, of } from 'rxjs';
+import { from, Observable, of, lastValueFrom } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { LocaleInterface } from '../../shared/interfaces/locale.interface';
@@ -33,5 +33,10 @@ export class LocaleService {
         }
       })
     );
+  }
+
+  async getLocaleByIri(iri: string): Promise<LocaleInterface | undefined> {
+    const locales = await lastValueFrom(this.getLocales());
+    return locales.find(locale => locale['@id'] === iri);
   }
 }

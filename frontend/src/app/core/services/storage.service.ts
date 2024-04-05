@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage-angular';
+import {Injectable} from '@angular/core';
+import {Storage} from '@ionic/storage-angular';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +20,7 @@ export class StorageService {
     return true;
   }
   async get(key: string): Promise<any> {
-    const value = await this.storage.get(key);
-    return value;
+    return await this.storage.get(key);
   }
 
   async remove(key: string): Promise<any> {
