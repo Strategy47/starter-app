@@ -6,6 +6,7 @@ import { AuthPageRoutingModule } from './auth-routing.module';
 import { AuthPage } from './auth.page';
 import { TranslateModule } from '@ngx-translate/core';
 import { AddressFormComponent } from '../shared/components/address-form/address-form.component';
+import {SharedModule} from "../shared/shared.module";
 
 @NgModule({
   imports: [
@@ -14,12 +15,12 @@ import { AddressFormComponent } from '../shared/components/address-form/address-
     ReactiveFormsModule,
     IonicModule.forRoot(),
     AuthPageRoutingModule,
+    SharedModule,
     ReactiveFormsModule,
     TranslateModule,
   ],
   declarations: [
-    AuthPage,
-    AddressFormComponent
+    AuthPage
   ]
 })
 export class AuthPageModule {}

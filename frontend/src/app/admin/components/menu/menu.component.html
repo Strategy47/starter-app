@@ -1,0 +1,73 @@
+
+<ion-menu contentId="main-content" type="overlay">
+  <ion-content>
+    <ion-list id="inbox-list" class="inbox-list ion-margin-bottom">
+
+      <ion-list-header class="ion-margin-bottom">
+        <ion-menu-toggle
+          style="cursor: pointer;"
+          auto-hide="false"
+          routerDirection="root"
+          routerLinkActive="selected"
+          routerLink="/"
+        >
+          <ion-card-title>
+            <h1 style="margin: 0; font-weight: bold;">
+              Administration
+            </h1>
+          </ion-card-title>
+        </ion-menu-toggle>
+      </ion-list-header>
+
+      <ion-list class="inbox-list ion-margin-bottom" *ngIf="user$ | async as user">
+        <ion-menu-toggle auto-hide="false">
+          <ion-item
+            routerDirection="root"
+            routerLinkActive="selected"
+            routerLink="/profile"
+            lines="full"
+            [button]="true"
+            [detail]="false"
+          >
+            <ion-avatar slot="start" *ngIf="user?.avatar">
+
+              <img src="https://images.rawpixel.com/image_png_1300/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA4L2pvYjEwMzQtZWxlbWVudC0wNi0zOTcucG5n.png">
+            </ion-avatar>
+            <ion-icon
+              *ngIf="!user?.avatar"
+              size="large"
+              slot="start"
+              name="person-circle-outline"
+            ></ion-icon>
+            <ion-label class="ion-text-wrap">
+              {{user.firstname}}&nbsp;{{user.lastname}}
+              <p>{{user.email}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+
+        <ion-menu-toggle auto-hide="false">
+          <ion-button
+            expand="block"
+            size="medium"
+            class="ion-margin"
+            (click)="logout()"
+          >
+            <ion-label color="#ffffff">
+              {{ 'menu.logout' | translate }}
+            </ion-label>
+          </ion-button>
+        </ion-menu-toggle>
+      </ion-list>
+
+      <ion-menu-toggle autoHide="false" *ngFor="let p of appPages; let i = index">
+        <ion-item [routerLink]="p.url" routerLinkActive="selected" routerDirection="root" detail="false">
+          <ion-icon slot="start" [name]="p.icon + '-outline'"></ion-icon>
+          <ion-label>
+            {{ p.title | translate }}
+          </ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+    </ion-list>
+  </ion-content>
+</ion-menu>

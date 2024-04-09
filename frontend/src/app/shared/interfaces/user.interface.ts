@@ -17,6 +17,7 @@ export interface UserInterface {
   updatedAt?: string;
   password?: string;
   token?: string;
+  avatar?: string;
   agency: {
     id: number;
     name: string;
