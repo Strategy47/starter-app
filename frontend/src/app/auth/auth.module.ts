@@ -5,8 +5,9 @@ import { IonicModule } from '@ionic/angular';
 import { AuthPageRoutingModule } from './auth-routing.module';
 import { AuthPage } from './auth.page';
 import { TranslateModule } from '@ngx-translate/core';
-import { AddressFormComponent } from '../shared/components/address-form/address-form.component';
-import {SharedModule} from "../shared/shared.module";
+import { SharedModule } from '../shared/shared.module';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 @NgModule({
   imports: [
@@ -20,7 +21,9 @@ import {SharedModule} from "../shared/shared.module";
     TranslateModule,
   ],
   declarations: [
-    AuthPage
+    AuthPage,
+    ResetPasswordComponent,
+    ForgotPasswordComponent
   ]
 })
 export class AuthPageModule {}

@@ -105,7 +105,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         message: 'error.field.not_blank',
         allowNull: false
     )]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['user:read', 'user:write', 'user:forgot_password:read'])]
     private ?string $email = null;
 
     /**
@@ -157,7 +157,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             message: 'error.field.format'
         )
     ]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['user:read', 'user:write', 'user:forgot_password:read'])]
     private ?PhoneNumber $phone = null;
 
     #[ORM\Column(nullable: true)]

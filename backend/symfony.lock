@@ -292,5 +292,18 @@
         "files": [
             "config/packages/validator.yaml"
         ]
+    },
+    "tilleuls/forgot-password-bundle": {
+        "version": "1.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "48ab9b5581997a68245b79ac21e355152e29fcde"
+        },
+        "files": [
+            "config/packages/coop_tilleuls_forgot_password.yaml",
+            "config/routes/coop_tilleuls_forgot_password.yaml"
+        ]
     }
 }

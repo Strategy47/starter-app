@@ -11,7 +11,6 @@ import { UserInterface } from '../../shared/interfaces/user.interface';
   providedIn: 'root'
 })
 export class UserService {
-
   constructor(
     private httpClient: HttpClient,
     private store: Store
@@ -22,6 +21,11 @@ export class UserService {
       map(response => response['hydra:member'] ? response['hydra:member'][0] : response)
     );
   }
+
+  sendResetPassword(token: string, password: string) {
+    return this.httpClient.post(`${environment.apiUrl}/forgot_password/${token}`, {password})
+  }
+
 
   updateUser(userId: any, userData: Partial<UserInterface>): Observable<any> {
     const headers = new HttpHeaders({

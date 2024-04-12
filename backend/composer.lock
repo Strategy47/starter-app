@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "35ac83423155bd6f81f10db13011a094",
+    "content-hash": "0a9603e8609027ac3bb44bc330f73f3c",
     "packages": [
         {
             "name": "api-platform/core",
@@ -1583,6 +1583,115 @@
                 "source": "https://github.com/giggsey/Locale/tree/2.5"
             },
             "time": "2023-11-01T17:19:48+00:00"
+        },
+        {
+            "name": "ircmaxell/random-lib",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ircmaxell/RandomLib.git",
+                "reference": "e9e0204f40e49fa4419946c677eccd3fa25b8cf4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ircmaxell/RandomLib/zipball/e9e0204f40e49fa4419946c677eccd3fa25b8cf4",
+                "reference": "e9e0204f40e49fa4419946c677eccd3fa25b8cf4",
+                "shasum": ""
+            },
+            "require": {
+                "ircmaxell/security-lib": "^1.1",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^1.11",
+                "mikey179/vfsstream": "^1.6",
+                "phpunit/phpunit": "^4.8|^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "RandomLib": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anthony Ferrara",
+                    "email": "ircmaxell@ircmaxell.com",
+                    "homepage": "http://blog.ircmaxell.com"
+                }
+            ],
+            "description": "A Library For Generating Secure Random Numbers",
+            "homepage": "https://github.com/ircmaxell/RandomLib",
+            "keywords": [
+                "cryptography",
+                "random",
+                "random-numbers",
+                "random-strings"
+            ],
+            "support": {
+                "issues": "https://github.com/ircmaxell/RandomLib/issues",
+                "source": "https://github.com/ircmaxell/RandomLib/tree/master"
+            },
+            "time": "2016-09-07T15:52:06+00:00"
+        },
+        {
+            "name": "ircmaxell/security-lib",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ircmaxell/SecurityLib.git",
+                "reference": "f3db6de12c20c9bcd1aa3db4353a1bbe0e44e1b5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ircmaxell/SecurityLib/zipball/f3db6de12c20c9bcd1aa3db4353a1bbe0e44e1b5",
+                "reference": "f3db6de12c20c9bcd1aa3db4353a1bbe0e44e1b5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "1.1.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "SecurityLib": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anthony Ferrara",
+                    "email": "ircmaxell@ircmaxell.com",
+                    "homepage": "http://blog.ircmaxell.com"
+                }
+            ],
+            "description": "A Base Security Library",
+            "homepage": "https://github.com/ircmaxell/SecurityLib",
+            "support": {
+                "issues": "https://github.com/ircmaxell/SecurityLib/issues",
+                "source": "https://github.com/ircmaxell/SecurityLib/tree/master"
+            },
+            "time": "2015-03-20T14:31:23+00:00"
         },
         {
             "name": "lcobucci/clock",
@@ -6827,6 +6936,100 @@
                 }
             ],
             "time": "2024-01-23T15:02:46+00:00"
+        },
+        {
+            "name": "tilleuls/forgot-password-bundle",
+            "version": "v1.5.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/coopTilleuls/CoopTilleulsForgotPasswordBundle.git",
+                "reference": "29c24cc039d62adbcf0436c171b1c663c41d3faa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/coopTilleuls/CoopTilleulsForgotPasswordBundle/zipball/29c24cc039d62adbcf0436c171b1c663c41d3faa",
+                "reference": "29c24cc039d62adbcf0436c171b1c663c41d3faa",
+                "shasum": ""
+            },
+            "require": {
+                "ircmaxell/random-lib": "^1.2",
+                "php": ">=8.1",
+                "symfony/config": "^5.1 || ^6.0 || ^7.0",
+                "symfony/dependency-injection": "^5.1 || ^6.0 || ^7.0",
+                "symfony/event-dispatcher": "^5.1 || ^6.0 || ^7.0",
+                "symfony/http-foundation": "^5.1 || ^6.0 || ^7.0",
+                "symfony/http-kernel": "^5.1.5 || ^6.0 || ^7.0",
+                "symfony/serializer": "^5.1 || ^6.0 || ^7.0"
+            },
+            "require-dev": {
+                "api-platform/core": "^3.0",
+                "behat/behat": "^3.1",
+                "dg/bypass-finals": "^1.1",
+                "doctrine/data-fixtures": "^1.2",
+                "doctrine/doctrine-bundle": "^2.11",
+                "doctrine/orm": "^2.6.3",
+                "ext-json": "*",
+                "friends-of-behat/symfony-extension": "^2.0.11 || ^2.1.0",
+                "jms/serializer-bundle": "^1.4 || ^2.3 || ^3.0 || ^4.0 || ^5.0",
+                "laminas/laminas-code": "^3.4 || ^4.0",
+                "ocramius/proxy-manager": "^2.0.4",
+                "sebastian/comparator": "^3.0",
+                "symfony/asset": "^5.1 || ^6.0 || ^7.0",
+                "symfony/browser-kit": "^5.1 || ^6.0 || ^7.0",
+                "symfony/framework-bundle": "^5.1 || ^6.0 || ^7.0",
+                "symfony/mailer": "^5.1 || ^6.0 || ^7.0",
+                "symfony/phpunit-bridge": "^5.1 || ^6.0 || ^7.0",
+                "symfony/property-access": "^5.1 || ^6.0 || ^7.0",
+                "symfony/security-bundle": "^5.1 || ^6.0 || ^7.0",
+                "symfony/stopwatch": "^5.1 || ^6.0 || ^7.0",
+                "symfony/templating": "^5.1 || ^6.0 || ^7.0",
+                "symfony/twig-bundle": "^5.1 || ^6.0 || ^7.0",
+                "symfony/var-dumper": "^5.1 || ^6.0 || ^7.0"
+            },
+            "suggest": {
+                "api-platform/core": "To connect with API Platform",
+                "doctrine/doctrine-bundle": "To connect with Doctrine in Symfony project",
+                "doctrine/orm": "To connect with Doctrine"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CoopTilleuls\\ForgotPasswordBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vincent CHALAMON",
+                    "email": "vincent@les-tilleuls.coop"
+                }
+            ],
+            "description": "Provides a 'forgot password' feature for a REST API",
+            "homepage": "https://github.com/coopTilleuls/CoopTilleulsForgotPasswordBundle",
+            "keywords": [
+                "api",
+                "forgot password",
+                "rest"
+            ],
+            "support": {
+                "issues": "https://github.com/coopTilleuls/CoopTilleulsForgotPasswordBundle/issues",
+                "source": "https://github.com/coopTilleuls/CoopTilleulsForgotPasswordBundle/tree/v1.5.3"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/vincentchalamon",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-01-14T13:50:29+00:00"
         },
         {
             "name": "twig/twig",

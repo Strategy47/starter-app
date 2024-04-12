@@ -11,6 +11,14 @@ export class EmailService {
   constructor(private http: HttpClient) { }
 
   sendResetPasswordEmail(email: string) {
-    return this.http.post(`${this.baseUrl}/users/reset-password`, {email}, { headers: this.header})
+    return this.http.post(`${this.baseUrl}/forgot_password/`, {email}, { headers: this.header})
+  }
+
+  verifyEmailAccount(emailToken: string) {
+    return this.http.post(`${this.baseUrl}/mail/verify?token=${emailToken}`, { headers: this.header})
+  }
+
+  changePassword(id: string, body: any){
+    return this.http.patch(`${this.baseUrl}/account/forgot-password/${id}`, body, { headers: this.header})
   }
 }

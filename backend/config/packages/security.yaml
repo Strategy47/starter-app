@@ -45,6 +45,7 @@ security:
         - { path: ^/register$, host: '%api_host%', roles: PUBLIC_ACCESS, methods: [ POST ]  }
         - { path: ^/locales, host: '%api_host%', roles: PUBLIC_ACCESS, methods: [ GET ]  }
         - { path: ^/countries, host: '%api_host%', roles: PUBLIC_ACCESS, methods: [ GET ]  }
+        - { path: ^/forgot_password, host: '%api_host%', roles: PUBLIC_ACCESS, methods: [ GET, POST ]  }
         - { path: ^/, host: '%api_host%', roles: IS_AUTHENTICATED_FULLY }
         # - { path: ^/profile, roles: ROLE_USER }
 
