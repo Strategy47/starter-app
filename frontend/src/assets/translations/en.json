@@ -34,6 +34,10 @@
     "email_phone": "Email or phone",
     "password": "Password",
     "enter_password": "Enter password",
+    "confirm_password": "Confirm password",
+    "begin_new": "Let's begin a new!",
+    "create_new": "Create your new password",
+    "confirm_not_match": "Password and Confirm Password not match!",
     "forgot_password": "Forgot password ?",
     "sign_up": "Sign Up",
     "email": "Email",
@@ -41,6 +45,7 @@
     "enter_email": "Enter email",
     "enter_phone": "Enter phone",
     "forgot_password_info": "Enter email or phone",
+    "forgot_password_desc": "First, we need to verify that it's you. Please enter your phone number or email address.",
     "or": "or",
     "become_member": "Become our member !",
     "i_am": "I am",
@@ -50,12 +55,16 @@
     "agency": "Agency",
     "select_language": "Select language",
     "agency_name": "Agency name",
-    "siret": "SIRET"
+    "siret": "SIRET",
+    "sentSuccessfully": "Verification sent successfully!",
+    "sentSuccessfullyDesc": "Great! We've sent a verification email. Please confirm your identity with us.\nIf you haven't received any email shortly, please also check your spam box, or wait for an SMS.",
+    "next": "Click here to next step"
   },
   "error" : {
     "user": {
       "invalid_credentials": "Invalid credentials"
     },
+    "phone0rEmail": "Something might have gone wrong with the email or phone number. Please double-check and ensure it's correct.",
     "phone": {
       "min_characters": "Phone must be at least 10 characters",
       "max_characters": "Phone must be below 11 characters",

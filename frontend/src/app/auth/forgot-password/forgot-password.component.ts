@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { EmailService } from '../../core/services/email.service';
@@ -9,15 +9,13 @@ import { LoadingController } from '@ionic/angular';
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.scss'],
 })
-export class ForgotPasswordComponent implements OnInit {
+export class ForgotPasswordComponent {
 
   verifySuccess = false
   errorVerify = false;
   constructor(private router: Router,
               private emailService: EmailService,
               private loadingCtrl: LoadingController) { }
-
-  ngOnInit() {}
 
   emailForm = new FormGroup({
     email: new FormControl("", Validators.required),

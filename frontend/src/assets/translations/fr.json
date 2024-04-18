@@ -35,12 +35,17 @@
     "password": "Mot de passe",
     "enter_password": "Entrer le mot de passe",
     "forgot_password": "Mot de passe oublié ?",
+    "confirm_password": "Confirmer le mot de passe",
+    "begin_new": "Commençons quelque chose de nouveau !",
+    "create_new": "Créez votre nouveau mot de passe",
+    "confirm_not_match": "Le mot de passe et la confirmation du mot de passe ne correspondent pas !",
     "sign_up": "S'inscrire",
     "email": "Email",
     "phone": "Téléphone",
     "enter_email": "Entrer l'email",
     "enter_phone": "Entrer le téléphone",
     "forgot_password_info": "Renseigner email ou téléphone",
+    "forgot_password_desc": "Premièrement, nous devons vérifier que c'est bien vous. Veuillez entrer votre numéro de téléphone ou votre adresse e-mail.",
     "or": "ou alors",
     "become_member": "Devenez notre membre !",
     "i_am": "Je suis",
@@ -50,12 +55,16 @@
     "agency": "Agence",
     "select_language": "Choisir la langue",
     "agency_name": "Nom de l'agence",
-    "siret": "SIRET"
+    "siret": "SIRET",
+    "sentSuccessfully": "Envoi de la vérification réussi !",
+    "sentSuccessfullyDesc": "Super ! Nous avons envoyé un email de vérification. Veuillez confirmer votre identité auprès de nous.\nSi vous n'avez pas reçu d'email dans un délai court, veuillez également vérifier votre boîte de spam, ou attendez un SMS.",
+    "next": "Cliquez ici pour passer à l'étape suivante"
   },
   "error" : {
     "user": {
       "invalid_credentials": "Identifiants incorrects"
     },
+    "phone0rEmail": "Quelque chose a peut-être mal tourné avec l'email ou le numéro de téléphone. Veuillez vérifier à nouveau et vous assurer que c'est correct.",
     "phone": {
       "min_characters": "Le numéro de téléphone doit comporter au moins 10 caractères",
       "max_characters": "Le numéro de téléphone doit comporter moins de 11 caractères",

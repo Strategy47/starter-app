@@ -2,6 +2,7 @@
 
 namespace App\EventSubscriber;
 
+use App\Entity\User;
 use CoopTilleuls\ForgotPasswordBundle\Event\CreateTokenEvent;
 use CoopTilleuls\ForgotPasswordBundle\Event\UpdatePasswordEvent;
 use Doctrine\ORM\EntityManagerInterface;
@@ -48,8 +49,13 @@ final class ForgotPasswordEventSubscriber implements EventSubscriberInterface
     public function onUpdatePassword(UpdatePasswordEvent $event): void
     {
         $passwordToken = $event->getPasswordToken();
+
+        /** @var User $user */
         $user = $passwordToken->getUser();
-        $user->setPassword($event->getPassword());
+        $user
+            ->setPassword($event->getPassword())
+            ->setEmailVerified(true)
+        ;
 
         $this->entityManager->flush();
     }

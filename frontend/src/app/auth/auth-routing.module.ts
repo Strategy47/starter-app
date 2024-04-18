@@ -4,14 +4,27 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthPage } from './auth.page';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: AuthPage
+    component: AuthPage,
+    children: [
+      {
+        path: '',
+        component: LoginComponent
+      },
+      {
+        path: 'forgot-password',
+        component: ForgotPasswordComponent
+      },
+      {
+        path: 'reset-password/:token',
+        component: ResetPasswordComponent
+      },
+    ]
   },
-  {path: 'forgot-password', component: ForgotPasswordComponent},
-  {path: 'reset-password/:token', component: ResetPasswordComponent},
 ];
 
 @NgModule({
